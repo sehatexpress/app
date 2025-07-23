@@ -1,7 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart'
     show Ref, StateNotifier, StateNotifierProvider;
 
-import '../services/restaurant_service.dart';
 import '../config/string_constants.dart' show Strings;
 import '../services/address_service.dart';
 import 'auth_provider.dart';
@@ -25,20 +24,6 @@ class AddressStateNotifier extends StateNotifier<void> {
     } finally {
       ref.read(globalProvider.notifier).updateLoading(false);
     }
-  }
-
-  // 🔹 Add/Remove restaurant from favorites
-  Future<void> addRemoveFromFavorite({
-    required String docId,
-    required List<dynamic> likes,
-  }) async {
-    await _performSafeOperation((uid) {
-      return ref.read(restaurantServiceProvider).addRemoveFromFavorite(
-            likes: likes,
-            docId: docId,
-            uid: uid,
-          );
-    });
   }
 
   // 🔹 Add address

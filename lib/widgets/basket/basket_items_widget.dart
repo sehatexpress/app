@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart'
 
 import '../../config/typo_config.dart' show typoConfig;
 import '../../providers/basket_provider.dart' show basketProvider;
-import 'add_more_items_widget.dart';
 import 'bill_summary_title_widget.dart';
 import 'item_tag_widget.dart';
 import 'update_cart_button_widget.dart';
@@ -37,16 +36,15 @@ class BasketItemsWidget extends ConsumerWidget {
                               Row(
                                 children: [
                                   ItemTagWidget(type: item.type!),
-                                  Expanded(
-                                    child: Text(item.name),
-                                  ),
+                                  Expanded(child: Text(item.name)),
                                 ],
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 '${item.quantity}xरु${item.sellingPrice} = रु${item.sellingPrice * item.quantity}',
-                                style: typoConfig.textStyle.smallSmall
-                                    .copyWith(height: 1),
+                                style: typoConfig.textStyle.smallSmall.copyWith(
+                                  height: 1,
+                                ),
                               ),
                             ],
                           ),
@@ -72,10 +70,10 @@ class BasketItemsWidget extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: const Text('Empty basket'),
                 ),
-          AddMoreItemWidget(
-            restaurant:
-                ref.read(basketProvider.select((state) => state.restaurant!)),
-          ),
+          // AddMoreItemWidget(
+          //   restaurant:
+          //       ref.read(basketProvider.select((state) => state.restaurant!)),
+          // ),
         ],
       ),
     );

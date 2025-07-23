@@ -16,7 +16,7 @@ class InitialSearchWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           LottieFiles.search,
-           Text(
+          Text(
             'Search your favourite restaurant',
             textAlign: TextAlign.center,
             style: typoConfig.textStyle.largeCaptionLabel3Regular,

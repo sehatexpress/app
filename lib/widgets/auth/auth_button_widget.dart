@@ -12,18 +12,14 @@ class AuthButtonWidget extends StatelessWidget {
     return ElevatedButton.icon(
       label: Text(
         'Login',
-        style: typoConfig.textStyle.largeCaptionLabel3Bold
-            .copyWith(color: Colors.white),
+        style: typoConfig.textStyle.largeCaptionLabel3Bold.copyWith(
+          color: Colors.white,
+        ),
       ),
-      icon: Icon(
-        Icons.login_rounded,
-        color: Colors.white,
-      ),
+      icon: Icon(Icons.login_rounded, color: Colors.white),
       style: TextButton.styleFrom(
         backgroundColor: ColorConstants.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(

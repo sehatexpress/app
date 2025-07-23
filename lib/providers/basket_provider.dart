@@ -9,7 +9,6 @@ import '../config/string_constants.dart' show Strings;
 import '../providers/global_provider.dart' show globalProvider;
 import '../providers/location_provider.dart' show locationProvider;
 import '../models/order_model.dart';
-import '../models/reataurant_model.dart';
 import '../services/geo_position_service.dart';
 import '../services/notification_service.dart';
 import '../services/order_service.dart';
@@ -22,8 +21,9 @@ import '../states/basket_state.dart';
 import 'lists_provider.dart'
     show citySettingsListProvider, ordersListProvider, userDetailProvider;
 
-final basketProvider =
-    StateNotifierProvider<BasketNotifier, BasketState>((ref) {
+final basketProvider = StateNotifierProvider<BasketNotifier, BasketState>((
+  ref,
+) {
   return BasketNotifier(ref);
 });
 
@@ -41,11 +41,8 @@ class BasketNotifier extends StateNotifier<BasketState> {
     state = state.copyWith(orders: orders, setting: setting);
   }
 
-  void init(RestaurantModel restaurant, ProductModel product) {
-    state = state.copyWith(
-      restaurant: restaurant,
-      items: [BasketItem.fromProduct(product)],
-    );
+  void init(ProductModel product) {
+    state = state.copyWith(items: [BasketItem.fromProduct(product)]);
   }
 
   void updateDefaultConfirmed(bool? value) =>
@@ -61,8 +58,9 @@ class BasketNotifier extends StateNotifier<BasketState> {
     if (index != -1) {
       final newQuantity = updatedItems[index].quantity + quantityChange;
       if (newQuantity > 0) {
-        updatedItems[index] =
-            updatedItems[index].copyWith(quantity: newQuantity);
+        updatedItems[index] = updatedItems[index].copyWith(
+          quantity: newQuantity,
+        );
       } else {
         updatedItems.removeAt(index);
       }
@@ -71,14 +69,17 @@ class BasketNotifier extends StateNotifier<BasketState> {
   }
 
   void addItem(ProductModel product) {
-    final existingItem =
-        state.items.firstWhereOrNull((item) => item.id == product.id);
+    final existingItem = state.items.firstWhereOrNull(
+      (item) => item.id == product.id,
+    );
     final updatedItems = existingItem != null
         ? state.items
-            .map((item) => item.id == product.id
-                ? item.copyWith(quantity: item.quantity + 1)
-                : item)
-            .toList()
+              .map(
+                (item) => item.id == product.id
+                    ? item.copyWith(quantity: item.quantity + 1)
+                    : item,
+              )
+              .toList()
         : [...state.items, BasketItem.fromProduct(product)];
 
     state = state.copyWith(items: updatedItems);
@@ -91,7 +92,7 @@ class BasketNotifier extends StateNotifier<BasketState> {
 
   void selectAddress(AddressModel? address) {
     state = state.copyWith(address: address);
-    if (address != null && state.restaurant != null) {
+    if (address != null) {
       _fetchDeliveryDistance();
     }
   }
@@ -100,8 +101,7 @@ class BasketNotifier extends StateNotifier<BasketState> {
     final globalNotifier = ref.read(globalProvider.notifier);
     try {
       globalNotifier.updateLoading(true);
-      final origin =
-          '${state.restaurant!.position.geopoint.latitude},${state.restaurant!.position.geopoint.longitude}';
+      final origin = '0,0';
       final destination =
           '${state.address!.position.geopoint.latitude},${state.address!.position.geopoint.longitude}';
       final distance = await ref
@@ -148,10 +148,9 @@ class BasketNotifier extends StateNotifier<BasketState> {
         latitude: cords.latitude,
         longitude: cords.longitude,
       );
-      var location = await ref.read(locationServiceProvider).getAddress(
-            cords.latitude,
-            cords.longitude,
-          );
+      var location = await ref
+          .read(locationServiceProvider)
+          .getAddress(cords.latitude, cords.longitude);
       AddressModel address = AddressModel(
         name: auth.name,
         mobile: auth.mobile,
@@ -167,10 +166,5 @@ class BasketNotifier extends StateNotifier<BasketState> {
   }
 
   /// clear basket
-  void clear() => state = state.copyWith(
-        voucher: null,
-        items: [],
-        restaurant: null,
-        tip: 0,
-      );
+  void clear() => state = state.copyWith(voucher: null, items: [], tip: 0);
 }

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart' show ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart' show ColorConstants;
 import '../../config/enums.dart' show FilterEnum;
 import '../../config/typo_config.dart' show typoConfig;
 import '../../models/product_model.dart';
-import '../../models/reataurant_model.dart';
 import '../../providers/basket_provider.dart' show basketProvider;
 import '../generic/custom_image_provider.dart';
 import '../generic/custom_ratingbar_widget.dart';
@@ -13,12 +12,10 @@ import '../generic/custom_ratingbar_widget.dart';
 class ProductItemWidget extends ConsumerWidget {
   final double? width;
   final ProductModel product;
-  final RestaurantModel restaurant;
   const ProductItemWidget({
     super.key,
     this.width,
     required this.product,
-    required this.restaurant,
   });
 
   @override

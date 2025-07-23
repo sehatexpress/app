@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/extensions.dart' show ScreenTypeExtension;
 import '../../config/typo_config.dart';
 import '../../config/constants.dart' show ColorConstants;
 import '../../providers/basket_provider.dart' show basketProvider;
-import '../../screens/restaurant/restaurant_detail_screen.dart';
 import '../../screens/root/basket_screen.dart';
 import '../dialogs/show_change_restaurant_in_cart_dialog.dart';
 
@@ -15,8 +13,6 @@ class FloatingActionButtonWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final restaurant =
-        ref.watch(basketProvider.select((state) => state.restaurant));
     final count = ref.watch(basketProvider.notifier).itemCount;
     return Container(
       height: 44,
@@ -37,16 +33,13 @@ class FloatingActionButtonWidget extends ConsumerWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 14,
-            backgroundImage:
-                restaurant != null ? NetworkImage(restaurant.image) : null,
-          ),
+          CircleAvatar(radius: 14, backgroundImage: NetworkImage('')),
           const SizedBox(width: 8),
           TextButton(
-            onPressed: () => context.push(RestaurantDetailsScreen(
-              restaurantId: restaurant!.id,
-            )),
+            // onPressed: () => context.push(RestaurantDetailsScreen(
+            //   restaurantId: restaurant!.id,
+            // )),
+            onPressed: null,
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,
               backgroundColor: Colors.transparent,
@@ -57,7 +50,7 @@ class FloatingActionButtonWidget extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  restaurant?.name ?? 'Restaurant Name',
+                  'Restaurant Name',
                   style: typoConfig.textStyle.smallSmall.copyWith(
                     fontWeight: FontWeight.w600,
                     color: ColorConstants.textColor,
@@ -125,15 +118,16 @@ class FloatingActionButtonWidget extends ConsumerWidget {
             width: 30,
             height: 36,
             child: IconButton(
-              onPressed: () => showChangeRestaurantInCartDialog(
-                isClear: true,
-                context: context,
-                text: restaurant?.name ?? 'unknown',
-              ).then((val) {
-                if (val == true) {
-                  ref.read(basketProvider.notifier).clearBasket();
-                }
-              }),
+              onPressed: () =>
+                  showChangeRestaurantInCartDialog(
+                    isClear: true,
+                    context: context,
+                    text: 'unknown',
+                  ).then((val) {
+                    if (val == true) {
+                      ref.read(basketProvider.notifier).clearBasket();
+                    }
+                  }),
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 backgroundColor: ColorConstants.textColor,

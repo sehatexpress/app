@@ -1,11 +1,9 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart';
 import '../../models/voucher_model.dart';
 import '../../providers/basket_provider.dart';
-import '../../providers/lists_provider.dart';
 import 'basket_item_text_widget.dart';
 import 'bill_summary_title_widget.dart';
 
@@ -15,10 +13,7 @@ class BillSummaryWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final basket = ref.watch(basketProvider);
-    final citySettings = ref.watch(citySettingsListProvider).value ?? [];
-    final city = citySettings.firstWhereOrNull(
-      (e) => e.id.toLowerCase() == basket.restaurant?.city.toLowerCase(),
-    );
+    final city = 'city';
 
     return Column(
       mainAxisSize: MainAxisSize.min,

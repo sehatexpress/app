@@ -6,7 +6,6 @@ import '../../config/enums.dart';
 import '../../config/extensions.dart';
 import '../../config/typo_config.dart';
 import '../../models/order_model.dart';
-import '../../screens/restaurant/restaurant_detail_screen.dart';
 import '../generic/custom_image_provider.dart';
 import 'order_items_list_widget.dart';
 import 'order_summary_widget.dart';
@@ -35,8 +34,9 @@ class OrderCardWidget extends ConsumerWidget {
             const Divider(height: 20),
             Text(
               'Cancellation Reason:- ${order.cancellationReason}',
-              style:
-                  typoConfig.textStyle.smallSmall.copyWith(color: Colors.red),
+              style: typoConfig.textStyle.smallSmall.copyWith(
+                color: Colors.red,
+              ),
             ),
           ],
         ],
@@ -62,9 +62,9 @@ class OrderCardWidget extends ConsumerWidget {
           child: GestureDetector(
             onTap: () {
               ref.read(valueProvider.notifier).clear();
-              context.push(RestaurantDetailsScreen(
-                restaurantId: order.restaurantId,
-              ));
+              // context.push(RestaurantDetailsScreen(
+              //   restaurantId: order.restaurantId,
+              // ));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

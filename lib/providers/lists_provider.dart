@@ -7,13 +7,11 @@ import '../models/comment_model.dart';
 import '../models/order_model.dart';
 import '../models/product_model.dart';
 import '../models/query_model.dart';
-import '../models/reataurant_model.dart';
 import '../models/user_model.dart';
 import '../services/address_service.dart';
 import '../services/lists_service.dart';
 import '../services/order_service.dart';
 import '../services/query_service.dart';
-import '../services/restaurant_service.dart';
 import '../services/setting_service.dart';
 import '../services/user_service.dart';
 import 'auth_provider.dart' show authUidProvider;
@@ -44,30 +42,6 @@ final userDetailProvider = StreamProvider<UserModel?>((ref) {
   return uid != null
       ? ref.watch(userServiceProvider).getUserStreamDetail(uid)
       : Stream.value(null);
-});
-
-// 🔹 Restaurant-related providers
-final restaurantListByCityProvider =
-    StreamProvider<List<RestaurantModel>>((ref) {
-  ref.keepAlive();
-  final city = ref.watch(locationProvider.select((state) => state.city));
-  return city != null
-      ? ref.watch(restaurantServiceProvider).getAllRestaurantsListByCity(city)
-      : Stream.value([]);
-});
-
-final favouriteRestaurantListProvider =
-    StreamProvider<List<RestaurantModel>>((ref) {
-  ref.keepAlive();
-  final uid = ref.watch(authUidProvider);
-  return uid != null
-      ? ref.watch(restaurantServiceProvider).getFavouriteRestaurants(uid)
-      : Stream.value([]);
-});
-
-final singleRestaurantListByCityProvider = StreamProvider.family
-    .autoDispose<RestaurantModel, String>((ref, restaurantId) {
-  return ref.watch(restaurantServiceProvider).getSingleRestaurant(restaurantId);
 });
 
 // 🔹 Product & Category providers

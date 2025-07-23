@@ -4,7 +4,6 @@ import '../config/enums.dart' show OrderStatusEnum;
 import '../models/address_model.dart';
 import '../models/basket_item.dart';
 import '../models/order_model.dart';
-import '../models/reataurant_model.dart';
 import '../models/setting_model.dart';
 import '../models/voucher_model.dart';
 
@@ -14,7 +13,6 @@ class BasketState {
   final List<OrderModel> orders;
   final VoucherModel? voucher;
   final List<BasketItem> items;
-  final RestaurantModel? restaurant;
   final double? tip;
   final AddressModel? address;
   final double deliveryDistance;
@@ -25,7 +23,6 @@ class BasketState {
     this.orders = const [],
     this.voucher,
     this.items = const [],
-    this.restaurant,
     this.tip = 0,
     this.address,
     this.deliveryDistance = 0,
@@ -37,7 +34,6 @@ class BasketState {
     List<OrderModel>? orders,
     VoucherModel? voucher,
     List<BasketItem>? items,
-    RestaurantModel? restaurant,
     double? tip,
     AddressModel? address,
     double? deliveryDistance,
@@ -48,7 +44,6 @@ class BasketState {
         orders: orders ?? this.orders,
         voucher: voucher ?? this.voucher,
         items: items ?? this.items,
-        restaurant: restaurant ?? this.restaurant,
         tip: tip ?? this.tip,
         address: address ?? this.address,
         deliveryDistance: deliveryDistance ?? this.deliveryDistance,

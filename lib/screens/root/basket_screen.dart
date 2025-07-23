@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/lottie_files.dart';
 import '../../widgets/basket/bill_summary_widget.dart';
@@ -19,14 +18,10 @@ class BasketScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var restaurant =
-        ref.watch(basketProvider.select((state) => state.restaurant));
     var items = ref.watch(basketProvider.select((state) => state.items));
     return Scaffold(
-      appBar: AppBar(
-        title: const BasketAppbarWidget(),
-      ),
-      body: items.isNotEmpty || restaurant != null
+      appBar: AppBar(title: const BasketAppbarWidget()),
+      body: items.isNotEmpty
           ? ListView(
               shrinkWrap: true,
               padding: const EdgeInsets.all(16),
@@ -54,7 +49,7 @@ class BasketScreen extends ConsumerWidget {
                 ],
               ),
             ),
-      bottomNavigationBar: restaurant != null && items.isNotEmpty
+      bottomNavigationBar: items.isNotEmpty
           ? const BottomAppBar(
               height: 110,
               padding: EdgeInsets.zero,

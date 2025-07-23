@@ -4,9 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart' show useState;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart' show ColorConstants;
-import '../../config/extensions.dart';
 import '../../providers/lists_provider.dart' show bannerListProvider;
-import '../../screens/restaurant/restaurant_detail_screen.dart';
 import '../generic/custom_image_provider.dart';
 import '../generic/loader_widget.dart';
 
@@ -44,9 +42,9 @@ class OfferSliderWidget extends HookConsumerWidget {
                           .map((e) => GestureDetector(
                                 onTap: () {
                                   if (e.restaurantId != null) {
-                                    context.push(RestaurantDetailsScreen(
-                                      restaurantId: e.restaurantId!,
-                                    ));
+                                    // context.push(RestaurantDetailsScreen(
+                                    //   restaurantId: e.restaurantId!,
+                                    // ));
                                   }
                                 },
                                 child: Container(

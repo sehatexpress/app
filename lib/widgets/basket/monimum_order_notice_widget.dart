@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart' show ColorConstants;
 import '../../config/typo_config.dart' show typoConfig;
@@ -12,9 +11,8 @@ class MinimumOrderNoticeWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var subTotal = ref.watch(basketProvider.select((state) => state.subTotal));
-    var restaurant =
-        ref.watch(basketProvider.select((state) => state.restaurant));
-    return (subTotal < restaurant!.minimumOrder)
+    var restaurant = 0;
+    return (subTotal < restaurant)
         ? Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -40,7 +38,7 @@ class MinimumOrderNoticeWidget extends ConsumerWidget {
                       color: ColorConstants.primary,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           )
