@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>398848679909-5m038vl5q566g5qqi3m0auide1hecdhc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.398848679909-5m038vl5q566g5qqi3m0auide1hecdhc</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBPkfUExEaQ096iYacIkKFuEbbuEnsWm1M</string>
+	<key>GCM_SENDER_ID</key>
+	<string>398848679909</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.sehatexpress.app</string>
+	<key>PROJECT_ID</key>
+	<string>sehatexpresss</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sehatexpresss.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:398848679909:ios:89c4abd81b2985ae4e590c</string>
+</dict>
+</plist>
