@@ -8,9 +8,7 @@ import '../../providers/value_provider.dart' show valueProvider;
 import '../../widgets/root/bottom_navbar_widget.dart';
 import '../../widgets/root/custom_appbar.dart';
 import '../profile/profile_screen.dart';
-import 'favourite_screen.dart';
 import 'home_screen.dart';
-import 'search_screen.dart';
 
 class RootScreen extends ConsumerWidget {
   const RootScreen({super.key});
@@ -42,9 +40,4 @@ class RootScreen extends ConsumerWidget {
   }
 }
 
-final _pageItems = const [
-  HomeScreen(),
-  SearchScreen(),
-  FavouriteScreen(),
-  ProfileScreen(),
-];
+final _pageItems = const [HomeScreen(), ProfileScreen()];

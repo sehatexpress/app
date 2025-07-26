@@ -50,19 +50,17 @@ extension ScreenTypeExtension on BuildContext {
 
   // show snackbbar
   void showSnackbar(
-    dynamic message, {
+    String message, {
     Duration duration = const Duration(seconds: 5),
   }) {
     final snackBar = SnackBar(
       duration: duration,
       clipBehavior: Clip.none,
-      backgroundColor: message is String
-          ? typoConfig.color.brandColoursBlueberry
-          : Colors.transparent,
-      padding: message is String
-          ? EdgeInsets.symmetric(vertical: 8, horizontal: 12)
-          : EdgeInsets.zero,
-      content: message is String ? Text(message) : (message as Widget),
+      backgroundColor: ColorConstants.primary,
+      content: Text(
+        message,
+        style: text.labelMedium?.copyWith(color: Colors.white),
+      ),
     );
     ScaffoldMessenger.of(this).showSnackBar(snackBar);
   }
@@ -84,20 +82,22 @@ extension OrderStatusValue on OrderStatusEnum {
 extension StringExtensions on String {
   String get initialLetters => isNotEmpty
       ? trim()
-          .split(' ')
-          .where((e) => e.isNotEmpty)
-          .map((l) => l[0])
-          .take(2)
-          .join()
-          .toUpperCase()
+            .split(' ')
+            .where((e) => e.isNotEmpty)
+            .map((l) => l[0])
+            .take(2)
+            .join()
+            .toUpperCase()
       : '';
 
   String get capitalize => isNotEmpty
       ? trim()
-          .split(' ')
-          .map((e) =>
-              e.isNotEmpty ? '${e[0].toUpperCase()}${e.substring(1)}' : '')
-          .join(' ')
+            .split(' ')
+            .map(
+              (e) =>
+                  e.isNotEmpty ? '${e[0].toUpperCase()}${e.substring(1)}' : '',
+            )
+            .join(' ')
       : '';
 
   bool get isEmail =>
@@ -150,10 +150,15 @@ extension StringTimeExtensions on String? {
 
 extension RestaurantTimeStatus on String {
   String getRestaurantStatus(String closingTime) {
-    final openingTimeParts =
-        split('.').first.split(':').map(int.parse).toList();
-    final closingTimeParts =
-        closingTime.split('.').first.split(':').map(int.parse).toList();
+    final openingTimeParts = split(
+      '.',
+    ).first.split(':').map(int.parse).toList();
+    final closingTimeParts = closingTime
+        .split('.')
+        .first
+        .split(':')
+        .map(int.parse)
+        .toList();
 
     if (openingTimeParts.length < 2 || closingTimeParts.length < 2) {
       return 'CLOSED';
@@ -161,9 +166,19 @@ extension RestaurantTimeStatus on String {
 
     final now = DateTime.now();
     final openingDateTime = DateTime(
-        now.year, now.month, now.day, openingTimeParts[0], openingTimeParts[1]);
+      now.year,
+      now.month,
+      now.day,
+      openingTimeParts[0],
+      openingTimeParts[1],
+    );
     final closingDateTime = DateTime(
-        now.year, now.month, now.day, closingTimeParts[0], closingTimeParts[1]);
+      now.year,
+      now.month,
+      now.day,
+      closingTimeParts[0],
+      closingTimeParts[1],
+    );
 
     if (now.isBefore(openingDateTime)) return 'OPENING SOON';
     if (now.isAfter(closingDateTime)) return 'CLOSED';
@@ -173,10 +188,15 @@ extension RestaurantTimeStatus on String {
 
 extension RestaurantTimeStatusBool on String {
   bool getRestaurantStatusBool(String closingTime) {
-    final openingTimeParts =
-        split('.').first.split(':').map(int.parse).toList();
-    final closingTimeParts =
-        closingTime.split('.').first.split(':').map(int.parse).toList();
+    final openingTimeParts = split(
+      '.',
+    ).first.split(':').map(int.parse).toList();
+    final closingTimeParts = closingTime
+        .split('.')
+        .first
+        .split(':')
+        .map(int.parse)
+        .toList();
 
     if (openingTimeParts.length < 2 || closingTimeParts.length < 2) {
       return false;
@@ -184,9 +204,19 @@ extension RestaurantTimeStatusBool on String {
 
     final now = DateTime.now();
     final openingDateTime = DateTime(
-        now.year, now.month, now.day, openingTimeParts[0], openingTimeParts[1]);
+      now.year,
+      now.month,
+      now.day,
+      openingTimeParts[0],
+      openingTimeParts[1],
+    );
     final closingDateTime = DateTime(
-        now.year, now.month, now.day, closingTimeParts[0], closingTimeParts[1]);
+      now.year,
+      now.month,
+      now.day,
+      closingTimeParts[0],
+      closingTimeParts[1],
+    );
 
     return now.isAfter(openingDateTime) && now.isBefore(closingDateTime);
   }
@@ -248,10 +278,10 @@ extension FirebaseErrorHandler on dynamic {
 
 extension DialogText on String {
   Widget get dialogTitle => Text(
-        this,
-        style: typoConfig.textStyle.smallBodyBodyText2.copyWith(
-          height: 1,
-          fontWeight: FontWeight.w600,
-        ),
-      );
+    this,
+    style: typoConfig.textStyle.smallBodyBodyText2.copyWith(
+      height: 1,
+      fontWeight: FontWeight.w600,
+    ),
+  );
 }

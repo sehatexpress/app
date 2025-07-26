@@ -54,7 +54,7 @@ class ProfileScreen extends ConsumerWidget {
                             Strings.logout,
                           ).present(context).then((val) => val ?? false);
                           if (result) {
-                            ref.read(authProvider.notifier).logout();
+                            ref.read(authProvider.notifier).signOut();
                           }
                         },
                         icon: const Icon(Icons.logout_rounded),

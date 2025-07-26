@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart'
-    show useMemoized, useTextEditingController;
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show HookConsumerWidget, WidgetRef;
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../providers/auth_provider.dart' show authProvider;
 import '../../config/constants.dart' show ColorConstants;
 import '../../config/typo_config.dart';
 import '../inputs/password_input_widget.dart';
@@ -35,10 +32,10 @@ class UpdatePasswordWidget extends HookConsumerWidget {
           const SizedBox(height: 16),
           TextButton(
             onPressed: () {
-              ref.read(authProvider.notifier).updatePassword(
-                    currentPassword: currentPassword.text.trim(),
-                    newPassword: newPassword.text.trim(),
-                  );
+              // ref.read(authProvider.notifier).updatePassword(
+              //       currentPassword: currentPassword.text.trim(),
+              //       newPassword: newPassword.text.trim(),
+              //     );
             },
             style: TextButton.styleFrom(
               backgroundColor: ColorConstants.primary,

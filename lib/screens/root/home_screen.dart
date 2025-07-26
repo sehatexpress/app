@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../widgets/home/menu_list_widget.dart';
+import '../../widgets/home/search_menu_widget.dart';
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.separated(
+    return ListView(
       shrinkWrap: true,
-      itemCount: 10,
-      padding: EdgeInsets.all(16.0),
-      itemBuilder: (_, i) => Container(
-        height: 200,
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-      separatorBuilder: (_, i) => const SizedBox(height: 12),
+      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.all(16),
+      children: const [
+        SearchMenuWidget(),
+        SizedBox(height: 12),
+        MenuListWidget(),
+      ],
     );
   }
 }

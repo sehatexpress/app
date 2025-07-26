@@ -10,6 +10,7 @@ import '../providers/basket_provider.dart';
 import '../providers/global_provider.dart';
 import '../providers/location_provider.dart';
 import '../providers/remote_config_provider.dart';
+import '../screens/auth_screen.dart';
 import '../services/notification_service.dart';
 import '../services/remote_config_service.dart';
 import '../states/global_state.dart';
@@ -17,7 +18,6 @@ import 'helper/loading_screen.dart';
 import 'helper/message_screen.dart';
 import 'helper/no_internet_screen.dart';
 import 'helper/order_placer_screen.dart';
-import 'location/select_city_screen.dart';
 import 'root/root_screen.dart';
 
 class Wrapper extends HookConsumerWidget {
@@ -25,6 +25,8 @@ class Wrapper extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.read(authProvider);
+
     /// check for update & force user to update
     useEffect(() {
       Future.microtask(() async {
@@ -84,16 +86,10 @@ class Wrapper extends HookConsumerWidget {
       }
     });
 
-    // Screen based on location access
-    final location = ref.watch(locationProvider);
     ref.listen(locationProvider, (prevLoc, newLoc) {
       ref.watch(basketProvider);
     });
 
-    if (location.enabled) {
-      return const RootScreen();
-    } else {
-      return const SelectCityScreen();
-    }
+    return user != null ? const AuthScreen() : const RootScreen();
   }
 }

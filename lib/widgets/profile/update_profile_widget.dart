@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart'
-    show useEffect, useMemoized, useState, useTextEditingController;
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show HookConsumerWidget, WidgetRef;
-import '../../config/string_constants.dart';
-import '../../providers/global_provider.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart';
+import '../../config/string_constants.dart';
 import '../../config/typo_config.dart';
-import '../../providers/auth_provider.dart';
+import '../../providers/global_provider.dart';
 import '../../providers/lists_provider.dart';
 import '../../services/user_service.dart' show userServiceProvider;
 import '../inputs/email_input_widget.dart';
@@ -53,10 +50,7 @@ class UpdateProfileWidget extends HookConsumerWidget {
           const SizedBox(height: 12),
           NameInputWidget(controller: name),
           const SizedBox(height: 12),
-          EmailInputWidget(
-            enabled: false,
-            controller: email,
-          ),
+          EmailInputWidget(enabled: false, controller: email),
           const SizedBox(height: 12),
           MobileInputWidget(
             controller: mobile,
@@ -81,19 +75,20 @@ class UpdateProfileWidget extends HookConsumerWidget {
           const SizedBox(height: 16),
           TextButton(
             onPressed: () {
-              ref.read(authProvider.notifier).updateProfile(
-                    name: name.text.trim(),
-                    gender: gender.value,
-                    phone: mobile.text.trim(),
-                  );
+              // ref.read(authProvider.notifier).updateProfile(
+              //       name: name.text.trim(),
+              //       gender: gender.value,
+              //       phone: mobile.text.trim(),
+              //     );
             },
             style: TextButton.styleFrom(
               backgroundColor: ColorConstants.primary,
             ),
             child: Text(
               'Update Profile',
-              style: typoConfig.textStyle.buttonsButtonSmall
-                  .copyWith(color: Colors.white),
+              style: typoConfig.textStyle.buttonsButtonSmall.copyWith(
+                color: Colors.white,
+              ),
             ),
           ),
         ],

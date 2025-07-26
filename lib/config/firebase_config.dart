@@ -52,6 +52,8 @@ class FirebaseConfig {
     messagingSenderId: '398848679909',
     projectId: 'sehatexpresss',
     storageBucket: 'sehatexpresss.firebasestorage.app',
+    androidClientId:
+        '398848679909-1003tf2r619j8j48kfma4ojsmcn80jik.apps.googleusercontent.com',
     iosClientId:
         '398848679909-5m038vl5q566g5qqi3m0auide1hecdhc.apps.googleusercontent.com',
     iosBundleId: 'com.sehatexpress.app',
@@ -63,6 +65,8 @@ class FirebaseConfig {
     messagingSenderId: '398848679909',
     projectId: 'sehatexpresss',
     storageBucket: 'sehatexpresss.firebasestorage.app',
+    androidClientId:
+        '398848679909-1003tf2r619j8j48kfma4ojsmcn80jik.apps.googleusercontent.com',
     iosClientId:
         '398848679909-5m038vl5q566g5qqi3m0auide1hecdhc.apps.googleusercontent.com',
     iosBundleId: 'com.sehatexpress.app',

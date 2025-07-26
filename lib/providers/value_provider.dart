@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'dart:math';
 
-import '../config/enums.dart' show FilterEnum;
 import '../states/value_state.dart';
 
 // Create a StateNotifier to manage ValueState
@@ -17,14 +17,22 @@ class ValueNotifier extends StateNotifier<ValueState> {
     state = state.copyWith(search: searchValue);
   }
 
-  // Method to set filter value
-  void setFilter(FilterEnum? filterValue) {
-    state = state.copyWith(filter: filterValue);
-  }
-
   void clear() => state = const ValueState();
 }
 
 // AutoDispose Provider that clears search and filter on dispose
-final valueProvider =
-    StateNotifierProvider<ValueNotifier, ValueState>((_) => ValueNotifier());
+final valueProvider = StateNotifierProvider<ValueNotifier, ValueState>(
+  (_) => ValueNotifier(),
+);
+
+final searchProductProvider = StateProvider.autoDispose<String?>((_) => null);
+
+final randomNumberProvider = StreamProvider.autoDispose<int>((ref) async* {
+  final search = ref.watch(searchProductProvider);
+  final random = Random();
+  if (search != null) {
+    yield random.nextInt(10) + 1;
+  } else {
+    yield 10;
+  }
+});

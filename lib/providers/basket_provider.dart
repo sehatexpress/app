@@ -18,14 +18,11 @@ import '../models/product_model.dart';
 import '../models/voucher_model.dart';
 import '../services/location_service.dart';
 import '../states/basket_state.dart';
-import 'lists_provider.dart'
-    show citySettingsListProvider, ordersListProvider, userDetailProvider;
+import 'lists_provider.dart';
 
-final basketProvider = StateNotifierProvider<BasketNotifier, BasketState>((
-  ref,
-) {
-  return BasketNotifier(ref);
-});
+final basketProvider = StateNotifierProvider<BasketNotifier, BasketState>(
+  (ref) => BasketNotifier(ref),
+);
 
 class BasketNotifier extends StateNotifier<BasketState> {
   final Ref ref;

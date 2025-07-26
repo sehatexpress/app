@@ -53,7 +53,7 @@ class ContactusWidget extends StatelessWidget {
                       backgroundColor: ColorConstants.primary.withAlpha(25),
                     ),
                     onPressed: () =>
-                        launchUrl(Uri.parse('mailto:toeato1@gmail.com')),
+                        launchUrl(Uri.parse('mailto:sehatexpress.in@gmail.com')),
                     child: Text(
                       'EMAIL US',
                       style:
@@ -97,7 +97,7 @@ List<IconData> _icons = [
 ];
 List<String> _title = ['Address', 'Email', 'Contact Number'];
 List<String> _subTitle = [
-  'Toeato Pvt. Ltd. Birgunj Nepal',
-  'toeato0@gmail.com',
+  'Sehat Express',
+  'sehatexpress.in@gmail.com',
   '+977 9802588671, +977 9814245916',
 ];

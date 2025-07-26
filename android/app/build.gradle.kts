@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.sehatexpress.app"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -24,7 +24,7 @@ android {
     defaultConfig {
         applicationId = "com.sehatexpress.app"
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         multiDexEnabled = true

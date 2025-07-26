@@ -16,12 +16,11 @@ class BottomBarModel {
     String? title,
     IconData? icon,
     IconData? selectedIcon,
-  }) =>
-      BottomBarModel(
-        title: title ?? this.title,
-        icon: icon ?? this.icon,
-        selectedIcon: selectedIcon ?? this.selectedIcon,
-      );
+  }) => BottomBarModel(
+    title: title ?? this.title,
+    icon: icon ?? this.icon,
+    selectedIcon: selectedIcon ?? this.selectedIcon,
+  );
 
   @override
   bool operator ==(covariant BottomBarModel other) {
@@ -41,16 +40,6 @@ List<BottomBarModel> bottomBarLists = [
     title: 'Home',
     selectedIcon: Icons.home_rounded,
     icon: Icons.home_outlined,
-  ),
-  BottomBarModel(
-    title: 'Search',
-    selectedIcon: Icons.search_rounded,
-    icon: Icons.search_outlined,
-  ),
-  BottomBarModel(
-    title: 'Favourite',
-    selectedIcon: Icons.favorite_rounded,
-    icon: Icons.favorite_outline,
   ),
   BottomBarModel(
     title: 'Profile',

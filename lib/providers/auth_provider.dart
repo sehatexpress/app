@@ -1,215 +1,124 @@
-import 'package:firebase_auth/firebase_auth.dart' show User;
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show VoidCallback;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../config/enums.dart' show MessageType;
-import '../config/extensions.dart' show StringExtensions;
-import '../config/string_constants.dart' show Strings;
-import '../services/address_service.dart';
+import '../config/enums.dart';
 import '../services/auth_service.dart';
-import '../services/notification_service.dart';
-import '../services/user_service.dart';
 import 'global_provider.dart' show globalProvider;
-import 'location_provider.dart' show locationProvider;
 
 class AuthStateNotifier extends StateNotifier<User?> {
   final Ref ref;
+  final AuthService _authService;
 
   // Initializing notifier
-  AuthStateNotifier(this.ref)
-      : super(ref.read(authServiceProvider).currentUser);
+  AuthStateNotifier(this.ref, this._authService)
+    : super(_authService.currentUser) {
+    _authService.authStateChanges.listen((user) => state = user);
+  }
 
-  // 🔹 Utility function for reducing redundant try-catch blocks
+  String? _verificationId;
+  int? _resendToken;
+
+  // ✅ Send OTP to phone number
+  Future<void> sendOTP({
+    required String phoneNumber,
+    required VoidCallback onCodeSent,
+  }) async {
+    await _performSafeOperation(() async {
+      await _authService.verifyPhone(
+        phone: '+91$phoneNumber',
+        forceResendingToken: _resendToken,
+        onCodeSent: (verificationId, resendToken) {
+          _verificationId = verificationId;
+          _resendToken = resendToken;
+          onCodeSent();
+          _showMessage("OTP sent successfully");
+          log('CODE SENT');
+          ref.read(isOTPSentProvider.notifier).state = true;
+        },
+        onVerified: (credential) async {
+          final user = await signInWithCredential(credential);
+          if (user != null) {
+            _showMessage("Phone auto-verified", type: MessageType.success);
+          }
+        },
+        onFailed: (e) {
+          _showMessage(
+            e.message ?? "OTP verification failed",
+            type: MessageType.error,
+          );
+        },
+        onAutoRetrievalTimeout: (verificationId) {
+          _verificationId = verificationId;
+        },
+      );
+    });
+  }
+
+  // ✅ Manually verify OTP
+  Future<void> verifyOTP(String otp) async {
+    if (_verificationId == null) {
+      _showMessage(
+        "Verification code expired or invalid",
+        type: MessageType.error,
+      );
+      return;
+    }
+
+    final credential = PhoneAuthProvider.credential(
+      verificationId: _verificationId!,
+      smsCode: otp,
+    );
+
+    await _performSafeOperation(() async {
+      final user = await signInWithCredential(credential);
+      if (user != null) {
+        _showMessage("Phone verified successfully", type: MessageType.success);
+      }
+    });
+  }
+
+  // ✅ Sign in using phone auth credential
+  Future<User?> signInWithCredential(AuthCredential credential) async {
+    final userCredential = await _authService.signInWithCredential(credential);
+    state = userCredential;
+    return state;
+  }
+
+  // ✅ Sign out
+  Future<void> signOut() async {
+    await _authService.logout();
+    state = null;
+  }
+
+  // ✅ Helper for loading + try/catch
   Future<void> _performSafeOperation(Future<void> Function() operation) async {
     try {
       ref.read(globalProvider.notifier).updateLoading(true);
       await operation();
     } catch (e) {
-      ref.read(globalProvider.notifier).updateMessage(e.toString());
+      _showMessage(e.toString(), type: MessageType.error);
     } finally {
       ref.read(globalProvider.notifier).updateLoading(false);
-      state = ref.read(authServiceProvider).currentUser;
     }
   }
 
-  // 🔹 Login with email & password
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
-    await _performSafeOperation(() async {
-      var user = await ref.read(authServiceProvider).loginWithEmailAndPassword(
-            email: email,
-            password: password,
-          );
-
-      if (user == null) {
-        ref.read(globalProvider.notifier).updateMessage(Strings.error);
-        return;
-      }
-
-      final token = await notificationService.getDeviceToken();
-      if (token != null) {
-        await ref
-            .read(userServiceProvider)
-            .updateDeviceToken(token: token, uid: user.uid);
-      }
-
-      if (!kIsWeb) {
-        final name = (user.displayName ?? '').split(' ').first.capitalize;
-        notificationService.sendLocalNotification(
-          'Welcome back, $name!',
-          'Your recent orders are ready to view. Let\'s find your next meal.',
-        );
-      }
-    });
-  }
-
-  // 🔹 Register user with email & password
-  Future<void> register({
-    required String email,
-    required String password,
-    required String name,
-    int? gender,
-    required String mobile,
-    String? type,
-  }) async {
-    await _performSafeOperation(() async {
-      var isUserExistWithMobile =
-          await ref.read(userServiceProvider).checkRegisteredUser(mobile);
-      if (isUserExistWithMobile) {
-        ref
-            .read(globalProvider.notifier)
-            .updateMessage(Strings.duplicateMobile);
-        return;
-      }
-      var user =
-          await ref.read(authServiceProvider).registerWithEmailAndPassword(
-                email: email,
-                password: password,
-                name: name,
-              );
-
-      if (user == null) {
-        ref.read(globalProvider.notifier).updateMessage(Strings.error);
-        return;
-      }
-
-      final deviceToken = await notificationService.getDeviceToken();
-      var location = ref.read(locationProvider);
-      var uid = user.uid;
-
-      await ref.read(userServiceProvider).saveNewUser(
-            uid: uid,
-            name: name,
-            gender: gender,
-            email: email,
-            mobile: mobile,
-            deviceToken: deviceToken,
-          );
-
-      if (location.location != null && type != null) {
-        await ref.read(addressServiceProvider).addAddress(
-              uid: uid,
-              name: name,
-              mobile: mobile,
-              email: user.email,
-              type: type,
-              address: location.location!.displayName,
-              latitude: location.location!.latitude,
-              longitude: location.location!.longitude,
-            );
-      }
-
-      if (!kIsWeb) {
-        final n = name.split(' ').first.capitalize;
-        notificationService.sendLocalNotification(
-          'Welcome, $n!',
-          'Your favorite restaurants are waiting. Dive into the delicious world of food.',
-        );
-      }
-    });
-  }
-
-  // 🔹 Update profile
-  Future<void> updateProfile({
-    required String name,
-    required int gender,
-    required String phone,
-  }) async {
-    if (state == null) {
-      ref
-          .read(globalProvider.notifier)
-          .updateMessage(Strings.loginBeforeProceeding);
-      return;
-    }
-
-    await _performSafeOperation(() async {
-      await ref
-          .read(authServiceProvider)
-          .updateCurrentProfile(name: name, gender: gender, phone: phone);
-    });
-  }
-
-  // 🔹 Logout
-  Future<void> logout() async {
-    if (state == null) {
-      ref
-          .read(globalProvider.notifier)
-          .updateMessage(Strings.loginBeforeProceeding);
-      return;
-    }
-
-    await _performSafeOperation(() async {
-      if (!kIsWeb) {
-        final name = (state?.displayName ?? '').split(' ').first.capitalize;
-        notificationService.sendLocalNotification(
-          'Logged out!',
-          'We\'ll miss you, $name! Come back soon.',
-        );
-      }
-      await ref.read(authServiceProvider).logout();
-      state = null; // Explicitly setting state to null after logout
-    });
-  }
-
-  // 🔹 Update password
-  Future<void> updatePassword({
-    required String currentPassword,
-    required String newPassword,
-  }) async {
-    if (state == null) {
-      ref
-          .read(globalProvider.notifier)
-          .updateMessage(Strings.loginBeforeProceeding);
-      return;
-    }
-
-    await _performSafeOperation(() async {
-      await ref.read(authServiceProvider).changePassword(
-            currentPassword: currentPassword,
-            newPassword: newPassword,
-          );
-      ref.read(globalProvider.notifier).updateMessage(
-            Strings.passwordUpdated,
-            type: MessageType.success,
-          );
-    });
-  }
-
-  // 🔹 Send password reset link
-  Future<void> sendPasswordResetLink(String email) async {
-    await _performSafeOperation(() async {
-      await ref.read(authServiceProvider).sendPasswordResetLink(email);
-    });
+  void _showMessage(String message, {MessageType type = MessageType.neutral}) {
+    ref.read(globalProvider.notifier).updateMessage(message, type: type);
   }
 }
 
+final isOTPSentProvider = StateProvider((_) => false);
+
 // 🔹 StateNotifierProvider
-final authProvider = StateNotifierProvider<AuthStateNotifier, User?>(
-  (ref) => AuthStateNotifier(ref),
-);
+final authProvider = StateNotifierProvider<AuthStateNotifier, User?>((ref) {
+  final authService = ref.read(authServiceProvider);
+  return AuthStateNotifier(ref, authService);
+});
 
 // 🔹 Provider to get the user UID
-final authUidProvider =
-    Provider<String?>((ref) => ref.watch(authProvider)?.uid);
+final authUidProvider = Provider<String?>(
+  (ref) => ref.watch(authProvider)?.uid,
+);
