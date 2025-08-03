@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show ConsumerWidget, WidgetRef;
-import '../../config/extensions.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../providers/global_provider.dart' show globalProvider;
 import '../../config/constants.dart' show ColorConstants;
+import '../../config/extensions.dart';
 import '../../config/string_constants.dart' show Strings;
 import '../../providers/auth_provider.dart' show authUidProvider;
 import '../../providers/basket_provider.dart' show basketProvider;
+import '../../providers/global_provider.dart' show  messageProvider;
 import '../../screens/root/voucher_screen.dart';
 
 class ApplyVoucherButton extends ConsumerWidget {
@@ -27,8 +26,8 @@ class ApplyVoucherButton extends ConsumerWidget {
           }
         } else {
           ref
-              .read(globalProvider.notifier)
-              .updateMessage(Strings.loginToApplyVoucher);
+              .read(messageProvider.notifier)
+              .state =Strings.loginToApplyVoucher;
         }
       },
       child: Text(

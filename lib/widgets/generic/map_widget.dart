@@ -90,7 +90,7 @@ class MapWidget extends HookConsumerWidget {
       myLocationEnabled: false,
       onTap: (latlng) async {
         try {
-          ref.read(globalProvider.notifier).updateLoading(true);
+          ref.read(loadingProvider.notifier).state =true;
           var location = await ref.read(locationServiceProvider).getAddress(
                 latlng.latitude,
                 latlng.longitude,
@@ -98,9 +98,9 @@ class MapWidget extends HookConsumerWidget {
           ref.read(locationProvider.notifier).addToSearchLocation(location);
           updateMarkers();
         } catch (e) {
-          ref.read(globalProvider.notifier).updateMessage(e.toString());
+          ref.read(messageProvider.notifier).state =e.toString();
         } finally {
-          ref.read(globalProvider.notifier).updateLoading(false);
+          ref.read(loadingProvider.notifier).state =false;
         }
       },
       onMapCreated: (mapController) {

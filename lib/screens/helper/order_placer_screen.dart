@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../config/lottie_files.dart' show LottieFiles;
 import '../../config/typo_config.dart';
 import '../../helper/controllers.dart';
-import '../../providers/global_provider.dart' show globalProvider;
+import '../../providers/global_provider.dart';
 import '../../widgets/generic/overlay_widget.dart';
 
 class OrderPlacedScreen {
@@ -54,7 +54,7 @@ class OrderPlacedScreen {
           ),
           const SizedBox(height: 20),
           GestureDetector(
-            onTap: () => ref.read(globalProvider.notifier).setOrderPlaced(false),
+            onTap: () => ref.read(orderPlacedProvider.notifier).state =false,
             child: Container(
               height: 36,
               width: 100,

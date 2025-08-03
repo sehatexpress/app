@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart' show ColorConstants;
 import '../../config/typo_config.dart' show typoConfig;
 import '../../models/voucher_model.dart';
 import '../../providers/basket_provider.dart' show basketProvider;
-import '../../providers/global_provider.dart' show globalProvider;
+import '../../providers/global_provider.dart' show messageProvider;
 import '../dialogs/voucher_applied_dialog.dart';
 import '../generic/dashed_line_divider_widget.dart';
 import 'terms_condition_list_widget.dart';
@@ -14,31 +13,26 @@ import 'voucher_expiry_status_widget.dart';
 
 class VoucherCardWidget extends ConsumerWidget {
   final VoucherModel voucher;
-  const VoucherCardWidget({
-    super.key,
-    required this.voucher,
-  });
+  const VoucherCardWidget({super.key, required this.voucher});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var subTotal = ref.watch(basketProvider.select((state) => state.subTotal));
     var discount = ref.watch(basketProvider.select((state) => state.discount));
-    var basketVoucher =
-        ref.watch(basketProvider.select((state) => state.voucher));
+    var basketVoucher = ref.watch(
+      basketProvider.select((state) => state.voucher),
+    );
     return GestureDetector(
       onTap: () {
         if (voucher.minimumOrder > subTotal) {
-          ref.read(globalProvider.notifier).updateMessage(
-              'Please add more items worth रु${voucher.minimumOrder - subTotal} to avail this offer.');
+          ref.read(messageProvider.notifier).state =
+              'Please add more items worth रु${voucher.minimumOrder - subTotal} to avail this offer.';
         } else {
           ref.read(basketProvider.notifier).applyVoucher(voucher);
           Navigator.pop(context, voucher);
           Future.delayed(
             Duration.zero,
-            () => voucherAppliedDialog(
-              context: context,
-              discount: discount,
-            ),
+            () => voucherAppliedDialog(context: context, discount: discount),
           );
         }
       },
@@ -84,20 +78,18 @@ class VoucherCardWidget extends ConsumerWidget {
                       children: [
                         Text(
                           voucher.code,
-                          style:
-                              typoConfig.textStyle.largeHeaderH5Bold.copyWith(
-                            height: 1,
-                            fontSize: 20,
-                            color: ColorConstants.primary,
-                          ),
+                          style: typoConfig.textStyle.largeHeaderH5Bold
+                              .copyWith(
+                                height: 1,
+                                fontSize: 20,
+                                color: ColorConstants.primary,
+                              ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           '(UPTO रु.${voucher.upto})',
                           style: typoConfig.textStyle.largeCaptionLabel3Bold
-                              .copyWith(
-                            height: 1,
-                          ),
+                              .copyWith(height: 1),
                         ),
                       ],
                     ),
@@ -119,9 +111,7 @@ class VoucherCardWidget extends ConsumerWidget {
                   color: ColorConstants.primary,
                 ),
               ),
-              TermsConditionListWidget(
-                conditions: voucher.conditions,
-              ),
+              TermsConditionListWidget(conditions: voucher.conditions),
               if (voucher.minimumOrder > subTotal)
                 Text(
                   'Add more items worth रु${voucher.minimumOrder - subTotal} to apply this coupon.',

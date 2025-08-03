@@ -17,7 +17,7 @@ class AuthScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.read(authProvider.notifier);
-    final loading = ref.watch(globalProvider.select((g) => g.loading));
+    final loading = ref.watch(loadingProvider);
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final phoneController = useTextEditingController();
     final otpController = useTextEditingController();

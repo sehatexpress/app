@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' show WidgetRef;
 
-import '../../config/extensions.dart' show StringExtensions;
 import '../../config/string_constants.dart' show Strings;
 import '../../config/typo_config.dart';
 import '../../helper/controllers.dart';
-import '../../providers/global_provider.dart' show globalProvider;
-import '../../states/global_state.dart';
+import '../../providers/global_provider.dart';
 import '../../widgets/generic/overlay_widget.dart';
 
 class MessageScreen {
@@ -18,19 +16,12 @@ class MessageScreen {
 
   GenericController? _controller;
 
-  void show({
-    required BuildContext context,
-    required GlobalState global,
-    required WidgetRef ref,
-  }) {
+  void show({required BuildContext context, required WidgetRef ref}) {
     if (_controller != null) {
-      _controller!.update(global.message ?? Strings.error);
+      final message = ref.read(messageProvider);
+      _controller!.update(message ?? Strings.error);
     } else {
-      _controller = showOverlay(
-        context: context,
-        global: global,
-        ref: ref,
-      );
+      _controller = showOverlay(context: context, ref: ref);
     }
   }
 
@@ -41,13 +32,13 @@ class MessageScreen {
 
   GenericController? showOverlay({
     required BuildContext context,
-    required GlobalState global,
     required WidgetRef ref,
   }) {
+    final message = ref.read(messageProvider);
     final overlayState = Overlay.of(context);
 
     final textController = StreamController<String>();
-    textController.add(global.message ?? Strings.error);
+    textController.add(message ?? Strings.error);
 
     final renderBox = context.findRenderObject() as RenderBox?;
     final size = renderBox?.size ?? MediaQuery.of(context).size;
@@ -57,14 +48,6 @@ class MessageScreen {
         return OverlayWidget(
           size: size,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                global.type.name.capitalize,
-                style: typoConfig.textStyle.largeCaptionLabel2Bold,
-              ),
-            ),
-            const SizedBox(height: 10),
             StreamBuilder<String>(
               stream: textController.stream,
               builder: (context, snapshot) {
@@ -82,7 +65,7 @@ class MessageScreen {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  ref.read(globalProvider.notifier).reset();
+                  ref.read(messageProvider.notifier).state = null;
                   hide();
                 },
                 child: Text(

@@ -7,30 +7,17 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../providers/location_provider.dart' show locationProvider;
-import '../config/enums.dart' show MessageType;
 import '../config/firebase_config.dart';
-import '../states/global_state.dart';
 
 /// connectivity provider
 final connectivityProvider = StreamProvider<List<ConnectivityResult>>(
   (ref) => Connectivity().onConnectivityChanged,
 );
 
-/// global state notifier
-class GlobalStateNotifier extends StateNotifier<GlobalState> {
-  GlobalStateNotifier() : super(GlobalState.initial(true));
-  void updateLoading(bool val) => state = state.copyWith(loading: val);
-  void updateMessage(String? err, {MessageType type = MessageType.error}) =>
-      state = state.copyWith(type: type, message: err, loading: false);
-  void reset() => state = GlobalState.initial(false);
 
-  void setOrderPlaced(bool val) => state = state.copyWith(orderPlaced: val);
-}
-
-/// global provider
-final globalProvider = StateNotifierProvider<GlobalStateNotifier, GlobalState>(
-  (_) => GlobalStateNotifier(),
-);
+final loadingProvider = StateProvider<bool>((ref) => false);
+final messageProvider = StateProvider<String?>((ref) => null);
+final orderPlacedProvider = StateProvider<bool>((ref) => false);
 
 /// APP STARTUP PROVIDER
 final appStartupProvider = FutureProvider<void>((ref) async {

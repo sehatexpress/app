@@ -1,10 +1,9 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show Ref, StateNotifier, StateNotifierProvider;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../config/string_constants.dart' show Strings;
 import '../services/address_service.dart';
 import 'auth_provider.dart';
-import 'global_provider.dart' show globalProvider;
+import 'global_provider.dart';
 
 class AddressStateNotifier extends StateNotifier<void> {
   final Ref ref;
@@ -17,12 +16,12 @@ class AddressStateNotifier extends StateNotifier<void> {
       var uid = ref.read(authUidProvider);
       if (uid == null) throw Strings.loginBeforeProceeding;
 
-      ref.read(globalProvider.notifier).updateLoading(true);
+      ref.read(loadingProvider.notifier).state =true;
       await operation(uid);
     } catch (e) {
-      ref.read(globalProvider.notifier).updateMessage(e.toString());
+      ref.read(messageProvider.notifier).state = e.toString();
     } finally {
-      ref.read(globalProvider.notifier).updateLoading(false);
+      ref.read(loadingProvider.notifier).state =false;
     }
   }
 

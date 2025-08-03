@@ -62,9 +62,8 @@ class UpdateProfileWidget extends HookConsumerWidget {
                         .read(userServiceProvider)
                         .checkRegisteredUser(val);
                     if (isUserExistWithMobile) {
-                      ref
-                          .read(globalProvider.notifier)
-                          .updateMessage(Strings.duplicateMobile);
+                      ref.read(messageProvider.notifier).state =
+                          Strings.duplicateMobile;
                       mobile.text = detail.value?.mobile ?? '';
                     }
                   }

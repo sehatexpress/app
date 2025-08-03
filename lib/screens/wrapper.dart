@@ -13,7 +13,6 @@ import '../providers/remote_config_provider.dart';
 import '../screens/auth_screen.dart';
 import '../services/notification_service.dart';
 import '../services/remote_config_service.dart';
-import '../states/global_state.dart';
 import 'helper/loading_screen.dart';
 import 'helper/message_screen.dart';
 import 'helper/no_internet_screen.dart';
@@ -55,25 +54,25 @@ class Wrapper extends HookConsumerWidget {
     });
 
     // Listen to global state for loading, messages, and order placement
-    ref.listen<GlobalState>(globalProvider, (prev, next) {
-      if (prev?.loading != next.loading) {
-        next.loading
+    ref.listen<bool>(loadingProvider, (prev, next) {
+      if (prev != next) {
+        next
             ? LoadingScreen.instance().show(context: context)
             : LoadingScreen.instance().hide();
       }
+    });
 
-      if (prev?.message != next.message) {
-        next.message != null
-            ? MessageScreen.instance().show(
-                context: context,
-                global: next,
-                ref: ref,
-              )
+    ref.listen<String?>(messageProvider, (prev, next) {
+      if (prev != next) {
+        next != null
+            ? MessageScreen.instance().show(context: context, ref: ref)
             : MessageScreen.instance().hide();
       }
+    });
 
-      if (prev?.orderPlaced != next.orderPlaced) {
-        next.orderPlaced == true
+    ref.listen<bool>(orderPlacedProvider, (prev, next) {
+      if (prev != next) {
+        next == true
             ? OrderPlacedScreen.instance.show(context, ref)
             : OrderPlacedScreen.instance.hide();
       }
@@ -90,6 +89,6 @@ class Wrapper extends HookConsumerWidget {
       ref.watch(basketProvider);
     });
 
-    return user != null ? const AuthScreen() : const RootScreen();
+    return user == null ? const AuthScreen() : const RootScreen();
   }
 }

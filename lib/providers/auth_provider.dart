@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show VoidCallback;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../config/enums.dart';
 import '../services/auth_service.dart';
-import 'global_provider.dart' show globalProvider;
+import 'global_provider.dart';
 
 class AuthStateNotifier extends StateNotifier<User?> {
   final Ref ref;
@@ -35,20 +32,16 @@ class AuthStateNotifier extends StateNotifier<User?> {
           _resendToken = resendToken;
           onCodeSent();
           _showMessage("OTP sent successfully");
-          log('CODE SENT');
           ref.read(isOTPSentProvider.notifier).state = true;
         },
         onVerified: (credential) async {
           final user = await signInWithCredential(credential);
           if (user != null) {
-            _showMessage("Phone auto-verified", type: MessageType.success);
+            _showMessage("Phone auto-verified");
           }
         },
         onFailed: (e) {
-          _showMessage(
-            e.message ?? "OTP verification failed",
-            type: MessageType.error,
-          );
+          _showMessage(e.message ?? "OTP verification failed");
         },
         onAutoRetrievalTimeout: (verificationId) {
           _verificationId = verificationId;
@@ -60,10 +53,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
   // ✅ Manually verify OTP
   Future<void> verifyOTP(String otp) async {
     if (_verificationId == null) {
-      _showMessage(
-        "Verification code expired or invalid",
-        type: MessageType.error,
-      );
+      _showMessage("Verification code expired or invalid");
       return;
     }
 
@@ -75,7 +65,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
     await _performSafeOperation(() async {
       final user = await signInWithCredential(credential);
       if (user != null) {
-        _showMessage("Phone verified successfully", type: MessageType.success);
+        _showMessage("Phone verified successfully");
       }
     });
   }
@@ -96,17 +86,17 @@ class AuthStateNotifier extends StateNotifier<User?> {
   // ✅ Helper for loading + try/catch
   Future<void> _performSafeOperation(Future<void> Function() operation) async {
     try {
-      ref.read(globalProvider.notifier).updateLoading(true);
+      ref.read(loadingProvider.notifier).state = true;
       await operation();
     } catch (e) {
-      _showMessage(e.toString(), type: MessageType.error);
+      _showMessage(e.toString());
     } finally {
-      ref.read(globalProvider.notifier).updateLoading(false);
+      ref.read(loadingProvider.notifier).state = false;
     }
   }
 
-  void _showMessage(String message, {MessageType type = MessageType.neutral}) {
-    ref.read(globalProvider.notifier).updateMessage(message, type: type);
+  void _showMessage(String message) {
+    ref.read(messageProvider.notifier).state = message;
   }
 }
 
