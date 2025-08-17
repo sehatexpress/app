@@ -12,11 +12,7 @@ import '../generic/custom_ratingbar_widget.dart';
 class ProductItemWidget extends ConsumerWidget {
   final double? width;
   final ProductModel product;
-  const ProductItemWidget({
-    super.key,
-    this.width,
-    required this.product,
-  });
+  const ProductItemWidget({super.key, this.width, required this.product});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,9 +37,7 @@ class ProductItemWidget extends ConsumerWidget {
             children: [
               SizedBox(
                 height: 90,
-                child: CustomImageProvider(
-                  image: product.image,
-                ),
+                child: CustomImageProvider(image: product.image),
               ),
               Positioned(
                 top: 10,
@@ -66,7 +60,7 @@ class ProductItemWidget extends ConsumerWidget {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
           Padding(
@@ -87,22 +81,22 @@ class ProductItemWidget extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'रु${product.sellingPrice}',
+                            'रु${product.price}',
                             style: typoConfig.textStyle.smallSmall,
                           ),
                           Row(
                             children: [
                               CustomRatingBar(
                                 itemSize: 11,
-                                initial: product.averageRating ?? 0,
+                                initial: product.averageRating,
                                 onRatingUpdate: (val) {},
                               ),
                               Text(
                                 '(${product.totalUsers})',
                                 style: typoConfig.textStyle.smallSmall,
-                              )
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -115,7 +109,7 @@ class ProductItemWidget extends ConsumerWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

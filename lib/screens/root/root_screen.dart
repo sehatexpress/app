@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../widgets/dialogs/alert_dialog_model.dart';
 import '../../widgets/dialogs/app_exit_dialog.dart';
-import '../../providers/value_provider.dart' show valueProvider;
+import '../../providers/value_provider.dart';
 import '../../widgets/root/bottom_navbar_widget.dart';
 import '../../widgets/root/custom_appbar.dart';
 import '../profile/profile_screen.dart';
@@ -15,12 +15,12 @@ class RootScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final index = ref.watch(valueProvider.select((state) => state.index));
+    final index = ref.watch(navIndexProvider);
 
     return PopScope(
       onPopInvokedWithResult: (x, _) async {
         if (index != 0) {
-          ref.read(valueProvider.notifier).changeIndex(0);
+          ref.read(navIndexProvider.notifier).state = 0;
         } else {
           var result = await AppExitDialog()
               .present(context)
@@ -33,7 +33,7 @@ class RootScreen extends ConsumerWidget {
       child: Scaffold(
         extendBody: true,
         appBar: const CustomAppBar(),
-        body: _pageItems[index],
+        body: SafeArea(child: _pageItems[index]),
         bottomNavigationBar: const ButtomNavbarWidget(),
       ),
     );

@@ -132,6 +132,9 @@ extension DateTimeExtensions on int {
       .difference(DateTime.fromMillisecondsSinceEpoch(otherMillis))
       .inMinutes
       .abs();
+
+  /// Returns the current local DateTime
+  static String get nowLocal => DateTime.now().toIso8601String();
 }
 
 extension StringTimeExtensions on String? {
@@ -285,3 +288,4 @@ extension DialogText on String {
     ),
   );
 }
+

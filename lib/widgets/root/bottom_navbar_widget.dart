@@ -9,11 +9,10 @@ class ButtomNavbarWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentIndex =
-        ref.watch(valueProvider.select((state) => state.index));
+    final currentIndex = ref.watch(navIndexProvider);
     return BottomNavigationBar(
       currentIndex: currentIndex,
-      onTap: (i) => ref.read(valueProvider.notifier).changeIndex(i),
+      onTap: (i) => ref.read(navIndexProvider.notifier).state = i,
       items: bottomBarLists
           .map(
             (e) => BottomNavigationBarItem(

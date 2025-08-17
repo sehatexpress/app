@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../models/basket_item.dart';
-import '../../config/enums.dart';
 import '../../config/typo_config.dart';
 import 'item_tag_widget.dart';
 
@@ -19,7 +18,7 @@ class OrderItemsListWidget extends StatelessWidget {
           padding: EdgeInsets.only(bottom: i == items.length - 1 ? 0 : 4),
           child: Row(
             children: [
-              ItemTagWidget(type: item.type ?? FilterEnum.veg),
+              ItemTagWidget(type: item.type),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
@@ -30,7 +29,7 @@ class OrderItemsListWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                'रु${(item.quantity * item.sellingPrice).toStringAsFixed(0)}',
+                'रु${(item.quantity * item.price).toStringAsFixed(0)}',
                 style: typoConfig.textStyle.smallSmall.copyWith(
                   fontWeight: FontWeight.w500,
                 ),

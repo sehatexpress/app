@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'config/constants.dart' show KeyConstants;
 import 'config/theme.dart' show theme;
@@ -23,12 +24,20 @@ class AppStartupWidget extends ConsumerWidget {
       theme: theme,
       title: 'Sehat Express',
       debugShowCheckedModeBanner: false,
-      home: appStartup.when(
-        data: (_) => const Wrapper(),
-        loading: () => const StartupLoading(),
-        error: (error, stack) => StartupError(
-          error: error,
-          onRetry: () => ref.refresh(appStartupProvider),
+      home: UpgradeAlert(
+        showLater: false,
+        showIgnore: false,
+        upgrader: Upgrader(
+          debugLogging: true,
+          durationUntilAlertAgain: Duration.zero,
+        ),
+        child: appStartup.when(
+          data: (_) => const Wrapper(),
+          loading: () => const StartupLoading(),
+          error: (error, stack) => StartupError(
+            error: error,
+            onRetry: () => ref.refresh(appStartupProvider),
+          ),
         ),
       ),
       navigatorKey: KeyConstants.navigatorKey,

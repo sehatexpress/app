@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/typo_config.dart' show typoConfig;
 import '../../providers/basket_provider.dart' show basketProvider;
@@ -35,13 +34,13 @@ class BasketItemsWidget extends ConsumerWidget {
                             children: [
                               Row(
                                 children: [
-                                  ItemTagWidget(type: item.type!),
+                                  ItemTagWidget(type: item.type),
                                   Expanded(child: Text(item.name)),
                                 ],
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '${item.quantity}xरु${item.sellingPrice} = रु${item.sellingPrice * item.quantity}',
+                                '${item.quantity}xरु${item.price} = रु${item.price * item.quantity}',
                                 style: typoConfig.textStyle.smallSmall.copyWith(
                                   height: 1,
                                 ),

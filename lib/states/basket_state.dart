@@ -38,20 +38,21 @@ class BasketState {
     AddressModel? address,
     double? deliveryDistance,
     bool? defaultConfirmed,
-  }) =>
-      BasketState(
-        setting: setting ?? this.setting,
-        orders: orders ?? this.orders,
-        voucher: voucher ?? this.voucher,
-        items: items ?? this.items,
-        tip: tip ?? this.tip,
-        address: address ?? this.address,
-        deliveryDistance: deliveryDistance ?? this.deliveryDistance,
-        defaultConfirmed: defaultConfirmed ?? this.defaultConfirmed,
-      );
+  }) => BasketState(
+    setting: setting ?? this.setting,
+    orders: orders ?? this.orders,
+    voucher: voucher ?? this.voucher,
+    items: items ?? this.items,
+    tip: tip ?? this.tip,
+    address: address ?? this.address,
+    deliveryDistance: deliveryDistance ?? this.deliveryDistance,
+    defaultConfirmed: defaultConfirmed ?? this.defaultConfirmed,
+  );
 
   double get subTotal => items.fold(
-      0, (total, current) => total + (current.sellingPrice * current.quantity));
+    0,
+    (total, current) => total + (current.price * current.quantity),
+  );
   String get subTotalString => subTotal.toStringAsFixed(2);
   String get totalString => total(subTotal).toStringAsFixed(2);
   int get _unCancelledOrders =>

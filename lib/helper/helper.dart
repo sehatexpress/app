@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../config/constants.dart';
 import '../models/address_model.dart';
 import '../widgets/auth/add_edit_address_widget.dart';
 
@@ -63,39 +61,4 @@ void openBottombarForAddress({
       ),
     ),
   );
-}
-
-void showUpdateDialog(BuildContext context, String title, String body) =>
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => WillPopScope(
-        onWillPop: () async => false,
-        child: AlertDialog(
-          title: Text(title),
-          content: Text(body),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                final url = Uri.parse(RemoteConfigConstant.playStoreURL);
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.externalApplication);
-                }
-              },
-              child: const Text("Update Now"),
-            ),
-          ],
-        ),
-      ),
-    );
-
-bool isVersionOutdated(String current, String minimum) {
-  List<int> curr = current.split('.').map(int.parse).toList();
-  List<int> min = minimum.split('.').map(int.parse).toList();
-
-  for (int i = 0; i < min.length; i++) {
-    if (i >= curr.length || curr[i] < min[i]) return true;
-    if (curr[i] > min[i]) return false;
-  }
-  return false;
 }

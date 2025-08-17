@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../providers/value_provider.dart';
 import '../../config/enums.dart';
 import '../../config/extensions.dart';
 import '../../config/typo_config.dart';
@@ -61,7 +60,6 @@ class OrderCardWidget extends ConsumerWidget {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              ref.read(valueProvider.notifier).clear();
               // context.push(RestaurantDetailsScreen(
               //   restaurantId: order.restaurantId,
               // ));

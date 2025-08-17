@@ -96,7 +96,7 @@ class BasketNotifier extends StateNotifier<BasketState> {
 
   Future<void> _fetchDeliveryDistance() async {
     try {
-      ref.read(loadingProvider.notifier).state =true;
+      ref.read(loadingProvider.notifier).state = true;
       final origin = '0,0';
       final destination =
           '${state.address!.position.geopoint.latitude},${state.address!.position.geopoint.longitude}';
@@ -105,9 +105,9 @@ class BasketNotifier extends StateNotifier<BasketState> {
           .getDeliveryDistance(origin, destination);
       state = state.copyWith(deliveryDistance: distance);
     } catch (e) {
-      ref.read(messageProvider.notifier).state =e.toString();
+      ref.read(messageProvider.notifier).state = e.toString();
     } finally {
-      ref.read(loadingProvider.notifier).state =false;
+      ref.read(loadingProvider.notifier).state = false;
     }
   }
 
