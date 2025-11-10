@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -54,7 +53,7 @@ class PlaceOrderButtonWidget extends ConsumerWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '${address.name.capitalize}, ${address.mobile}',
+                                      '${address.name.capitalize}, ${address.phone}',
                                       style: typoConfig
                                           .textStyle
                                           .largeCaptionLabel3Bold

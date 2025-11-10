@@ -1,3 +1,5 @@
+import 'package:hooks_riverpod/legacy.dart';
+
 import '../models/product_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

@@ -1,4 +1,4 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart' show StreamProvider;
+import 'package:hooks_riverpod/hooks_riverpod.dart' show StreamProvider, ProviderListenableSelect;
 
 import '../models/address_model.dart';
 import '../models/banner_model.dart';

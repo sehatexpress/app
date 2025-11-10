@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/typo_config.dart' show typoConfig;
 import '../../providers/basket_provider.dart' show basketProvider;
@@ -17,7 +16,7 @@ class BasketAppbarWidget extends ConsumerWidget {
             minVerticalPadding: 0,
             contentPadding: EdgeInsets.zero.copyWith(right: 16),
             title: Text(
-              'Delivery to ${address.addressType?.toUpperCase() ?? 'Home'} - ${address.name}, ${address.mobile}',
+              'Delivery to ${address.addressType?.toUpperCase() ?? 'Home'} - ${address.name}, ${address.phone}',
               maxLines: 1,
               style: typoConfig.textStyle.smallCaptionSubtitle1.copyWith(
                 height: 1,
@@ -36,8 +35,9 @@ class BasketAppbarWidget extends ConsumerWidget {
           )
         : Text(
             'My Basket',
-            style: typoConfig.textStyle.largeCaptionLabel2Bold
-                .copyWith(color: Colors.white),
+            style: typoConfig.textStyle.largeCaptionLabel2Bold.copyWith(
+              color: Colors.white,
+            ),
           );
   }
 }

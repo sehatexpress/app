@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show listEquals, immutable;
 
 import '../config/enums.dart' show FilterEnum;
 import '../config/extensions.dart' show StringExtensions, DateTimeExtensions;
-import '../config/string_constants.dart' show FirestoreFields;
+import '../config/string_constants.dart' show Fields;
 
 @immutable
 class ProductModel {
@@ -101,29 +101,27 @@ class ProductModel {
 
   factory ProductModel.fromSnapshot(DocumentSnapshot snap) => ProductModel(
     id: snap.id,
-    restaurantId: snap[FirestoreFields.restaurantId],
-    name: (snap[FirestoreFields.name] as String).capitalize,
-    type: snap[FirestoreFields.type] == 'veg'
-        ? FilterEnum.veg
-        : FilterEnum.nonVeg,
-    category: snap[FirestoreFields.category],
-    image: snap[FirestoreFields.image],
-    price: snap[FirestoreFields.sellingPrice].toDouble(),
-    commissionType: snap[FirestoreFields.commissionType],
-    commission: snap[FirestoreFields.commission].toDouble(),
-    featured: snap[FirestoreFields.featured],
-    newProduct: snap[FirestoreFields.newProduct],
-    recommended: snap[FirestoreFields.recommended],
-    averageRating: snap[FirestoreFields.averageRating].toDouble(),
-    totalUsers: snap[FirestoreFields.totalUsers],
-    likes: snap[FirestoreFields.likes],
-    sold: snap[FirestoreFields.sold],
-    status: snap[FirestoreFields.status],
-    createdAt: snap[FirestoreFields.createdAt],
-    updatedAt: snap[FirestoreFields.updatedAt],
-    description: snap[FirestoreFields.description],
-    bestSeller: snap.data().toString().contains(FirestoreFields.bestSeller)
-        ? snap[FirestoreFields.bestSeller]
+    restaurantId: snap[Fields.restaurantId],
+    name: (snap[Fields.name] as String).capitalize,
+    type: snap[Fields.type] == 'veg' ? FilterEnum.veg : FilterEnum.nonVeg,
+    category: snap[Fields.category],
+    image: snap[Fields.image],
+    price: snap[Fields.sellingPrice].toDouble(),
+    commissionType: snap[Fields.commissionType],
+    commission: snap[Fields.commission].toDouble(),
+    featured: snap[Fields.featured],
+    newProduct: snap[Fields.newProduct],
+    recommended: snap[Fields.recommended],
+    averageRating: snap[Fields.averageRating].toDouble(),
+    totalUsers: snap[Fields.totalUsers],
+    likes: snap[Fields.likes],
+    sold: snap[Fields.sold],
+    status: snap[Fields.status],
+    createdAt: snap[Fields.createdAt],
+    updatedAt: snap[Fields.updatedAt],
+    description: snap[Fields.description],
+    bestSeller: snap.data().toString().contains(Fields.bestSeller)
+        ? snap[Fields.bestSeller]
         : false,
   );
 

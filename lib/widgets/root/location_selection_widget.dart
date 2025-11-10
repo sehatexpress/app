@@ -114,7 +114,7 @@ class _AddressListWidget extends StatelessWidget {
                       style: typoConfig.textStyle.smallBodyBodyText1,
                     ),
                     title:
-                        '${e.addressType?.toUpperCase()} - ${e.name}, ${e.mobile}',
+                        '${e.addressType?.toUpperCase()} - ${e.name}, ${e.phone}',
                     subtitle: e.street,
                     onTap: () async {
                       await ref

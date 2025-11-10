@@ -1,11 +1,44 @@
+import 'dart:convert' show json;
+
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuthException;
 import 'package:firebase_core/firebase_core.dart' show FirebaseException;
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:http/http.dart' show Response;
 import 'package:intl/intl.dart' show DateFormat;
 
+import '../providers/global_provider.dart';
 import 'constants.dart';
 import 'enums.dart';
 import 'typo_config.dart';
+
+extension LoadingExtension on Ref {
+  Future<T?> withLoading<T>(Future<T?> Function() action) async {
+    try {
+      read(loadingProvider.notifier).state = true;
+      return await action();
+    } catch (e) {
+      read(messageProvider.notifier).state = e.toString();
+      return null;
+    } finally {
+      read(loadingProvider.notifier).state = false;
+    }
+  }
+}
+
+extension LoadExtension on WidgetRef {
+  Future<T?> withLoading<T>(Future<T?> Function() action) async {
+    try {
+      read(loadingProvider.notifier).state = true;
+      return await action();
+    } catch (e) {
+      read(messageProvider.notifier).state = e.toString();
+      return null;
+    } finally {
+      read(loadingProvider.notifier).state = false;
+    }
+  }
+}
 
 // screen size
 extension ScreenTypeExtension on BuildContext {
@@ -63,6 +96,44 @@ extension ScreenTypeExtension on BuildContext {
       ),
     );
     ScaffoldMessenger.of(this).showSnackBar(snackBar);
+  }
+
+  Future<bool?> showGenericDialog({
+    required String title,
+    required String content,
+  }) => showDialog<bool>(
+    context: this,
+    builder: (_) => AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('No'),
+          onPressed: () => Navigator.of(this).pop(false),
+        ),
+        ElevatedButton(
+          child: const Text('Yes'),
+          onPressed: () => Navigator.of(this).pop(true),
+        ),
+      ],
+    ),
+  );
+
+  void showAppBottomSheet<T>(Widget child, {bool isScrollControlled = true}) {
+    showModalBottomSheet<T>(
+      context: this,
+      isScrollControlled: isScrollControlled,
+      backgroundColor: const Color(0xFFF5F5F5),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          top: 24,
+          left: 24,
+          right: 24,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: SafeArea(child: child),
+      ),
+    );
   }
 }
 
@@ -275,6 +346,23 @@ extension FirebaseErrorHandler on dynamic {
           "Something went wrong with Firebase!";
     } else {
       return "Unexpected error: ${toString()}";
+    }
+  }
+}
+
+extension ResponseExtension on Response {
+  String get errorMessage {
+    try {
+      if (body.isNotEmpty) {
+        final Map<String, dynamic> jsonBody = json.decode(body);
+        return jsonBody['error'] ??
+            jsonBody['message'] ??
+            'Something went wrong: ${reasonPhrase.toString()}';
+      } else {
+        return 'Something went wrong: ${reasonPhrase.toString()}';
+      }
+    } catch (e) {
+      return 'Error parsing response body';
     }
   }
 }

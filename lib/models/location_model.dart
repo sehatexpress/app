@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show immutable;
 
-import '../config/string_constants.dart' show FirestoreFields;
+import '../config/string_constants.dart' show Fields;
 
 @immutable
 class LocationModel {
@@ -20,33 +20,32 @@ class LocationModel {
     double? longitude,
     String? displayName,
     String? city,
-  }) =>
-      LocationModel(
-        latitude: latitude ?? this.latitude,
-        longitude: longitude ?? this.longitude,
-        displayName: displayName ?? this.displayName,
-        city: city ?? this.city,
-      );
+  }) => LocationModel(
+    latitude: latitude ?? this.latitude,
+    longitude: longitude ?? this.longitude,
+    displayName: displayName ?? this.displayName,
+    city: city ?? this.city,
+  );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        FirestoreFields.latitude: latitude,
-        FirestoreFields.longitude: longitude,
-        FirestoreFields.displayName: displayName,
-        FirestoreFields.city: city,
-      };
+    Fields.latitude: latitude,
+    Fields.longitude: longitude,
+    Fields.displayName: displayName,
+    Fields.city: city,
+  };
 
   factory LocationModel.fromMap(Map<String, dynamic> map) => LocationModel(
-        latitude: double.parse(map['lat']),
-        longitude: double.parse(map['lon']),
-        displayName: map['display_name'],
-        city: map['address'].containsKey('city')
-            ? map['address']['city']
-            : map['address'].containsKey('town')
-                ? map['address']['town']
-                : map['address'].containsKey('municipality')
-                    ? map['address']['municipality']
-                    : map['address']['state_district'],
-      );
+    latitude: double.parse(map['lat']),
+    longitude: double.parse(map['lon']),
+    displayName: map['display_name'],
+    city: map['address'].containsKey('city')
+        ? map['address']['city']
+        : map['address'].containsKey('town')
+        ? map['address']['town']
+        : map['address'].containsKey('municipality')
+        ? map['address']['municipality']
+        : map['address']['state_district'],
+  );
 
   factory LocationModel.fromSearchMap(Map<String, dynamic> map) =>
       LocationModel(

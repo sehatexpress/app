@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show immutable, listEquals;
 
 import '../config/enums.dart' show CityEnum, cityFromString;
 import '../config/extensions.dart' show ExpiryCheck;
-import '../config/string_constants.dart' show FirestoreFields;
+import '../config/string_constants.dart' show Fields;
 
 @immutable
 class VoucherModel {
@@ -62,50 +62,49 @@ class VoucherModel {
     String? restaurantId,
     String? userId,
     CityEnum? city,
-  }) =>
-      VoucherModel(
-        id: id ?? this.id,
-        code: code ?? this.code,
-        value: value ?? this.value,
-        type: type ?? this.type,
-        minimumOrder: minimumOrder ?? this.minimumOrder,
-        beginDate: beginDate ?? this.beginDate,
-        expiryDate: expiryDate ?? this.expiryDate,
-        upto: upto ?? this.upto,
-        status: status ?? this.status,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        users: users ?? this.users,
-        conditions: conditions ?? this.conditions,
-        expired: expired ?? this.expired,
-        restaurantId: restaurantId ?? this.restaurantId,
-        userId: userId ?? this.userId,
-        city: city ?? this.city,
-      );
+  }) => VoucherModel(
+    id: id ?? this.id,
+    code: code ?? this.code,
+    value: value ?? this.value,
+    type: type ?? this.type,
+    minimumOrder: minimumOrder ?? this.minimumOrder,
+    beginDate: beginDate ?? this.beginDate,
+    expiryDate: expiryDate ?? this.expiryDate,
+    upto: upto ?? this.upto,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    users: users ?? this.users,
+    conditions: conditions ?? this.conditions,
+    expired: expired ?? this.expired,
+    restaurantId: restaurantId ?? this.restaurantId,
+    userId: userId ?? this.userId,
+    city: city ?? this.city,
+  );
 
   factory VoucherModel.fromSnapshot(DocumentSnapshot snapshot) => VoucherModel(
-        id: snapshot.id,
-        code: snapshot[FirestoreFields.code],
-        value: snapshot[FirestoreFields.value].toDouble(),
-        type: snapshot[FirestoreFields.type],
-        minimumOrder: snapshot[FirestoreFields.minimumOrder].toDouble(),
-        beginDate: snapshot[FirestoreFields.beginDate],
-        expiryDate: snapshot[FirestoreFields.expiryDate],
-        upto: snapshot[FirestoreFields.upto].toDouble(),
-        status: snapshot[FirestoreFields.status],
-        createdAt: snapshot[FirestoreFields.createdAt],
-        updatedAt: snapshot[FirestoreFields.updatedAt],
-        users: List<String>.from(snapshot[FirestoreFields.users]),
-        conditions: List<String>.from(snapshot[FirestoreFields.conditions]),
-        expired: (snapshot[FirestoreFields.expiryDate] as String).isExpired(),
-        restaurantId: snapshot[FirestoreFields.restaurantId],
-        userId: snapshot[FirestoreFields.userId],
-        city: snapshot.data().toString().contains('city')
-            ? snapshot[FirestoreFields.city] != null
-                ? cityFromString(snapshot[FirestoreFields.city])
-                : null
-            : null,
-      );
+    id: snapshot.id,
+    code: snapshot[Fields.code],
+    value: snapshot[Fields.value].toDouble(),
+    type: snapshot[Fields.type],
+    minimumOrder: snapshot[Fields.minimumOrder].toDouble(),
+    beginDate: snapshot[Fields.beginDate],
+    expiryDate: snapshot[Fields.expiryDate],
+    upto: snapshot[Fields.upto].toDouble(),
+    status: snapshot[Fields.status],
+    createdAt: snapshot[Fields.createdAt],
+    updatedAt: snapshot[Fields.updatedAt],
+    users: List<String>.from(snapshot[Fields.users]),
+    conditions: List<String>.from(snapshot[Fields.conditions]),
+    expired: (snapshot[Fields.expiryDate] as String).isExpired(),
+    restaurantId: snapshot[Fields.restaurantId],
+    userId: snapshot[Fields.userId],
+    city: snapshot.data().toString().contains('city')
+        ? snapshot[Fields.city] != null
+              ? cityFromString(snapshot[Fields.city])
+              : null
+        : null,
+  );
 
   @override
   String toString() =>

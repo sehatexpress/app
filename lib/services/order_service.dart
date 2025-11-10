@@ -20,8 +20,8 @@ class OrderService {
       if (userId == null) return Stream.empty();
 
       return _orderRef
-          .where(FirestoreFields.userId, isEqualTo: userId)
-          .orderBy(FirestoreFields.orderedDate, descending: true)
+          .where(Fields.userId, isEqualTo: userId)
+          .orderBy(Fields.orderedDate, descending: true)
           .snapshots()
           .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
     } catch (e) {
@@ -35,9 +35,9 @@ class OrderService {
       if (userId == null) return Stream.empty();
 
       return _orderRef
-          .where(FirestoreFields.userId, isEqualTo: userId)
-          .where(FirestoreFields.discountVoucherId, isNull: false)
-          .orderBy(FirestoreFields.orderedDate, descending: true)
+          .where(Fields.userId, isEqualTo: userId)
+          .where(Fields.discountVoucherId, isNull: false)
+          .orderBy(Fields.orderedDate, descending: true)
           .snapshots(includeMetadataChanges: true)
           .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList())
           .asBroadcastStream()
@@ -79,8 +79,8 @@ class OrderService {
 
     try {
       final res = await _orderRef
-          .where(FirestoreFields.userId, isEqualTo: userId)
-          .orderBy(FirestoreFields.orderedDate, descending: true)
+          .where(Fields.userId, isEqualTo: userId)
+          .orderBy(Fields.orderedDate, descending: true)
           .limit(5)
           .get();
       return res.docs.map((doc) => doc.data()).toList();

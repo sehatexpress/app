@@ -8,7 +8,7 @@ import 'position_model.dart';
 class AddressModel {
   final String? id;
   final String name;
-  final String mobile;
+  final String phone;
   final String? addressType;
   final String? email;
   final String street;
@@ -19,7 +19,7 @@ class AddressModel {
   const AddressModel({
     this.id,
     required this.name,
-    required this.mobile,
+    required this.phone,
     this.addressType,
     this.email,
     required this.street,
@@ -32,7 +32,7 @@ class AddressModel {
   AddressModel copyWith({
     String? id,
     String? name,
-    String? mobile,
+    String? phone,
     String? addressType,
     String? email,
     String? street,
@@ -40,39 +40,37 @@ class AddressModel {
     bool? status,
     int? createdAt,
     int? updatedAt,
-  }) =>
-      AddressModel(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        mobile: mobile ?? this.mobile,
-        addressType: addressType ?? this.addressType,
-        email: email ?? this.email,
-        street: street ?? this.street,
-        position: position ?? this.position,
-        status: status ?? this.status,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-      );
+  }) => AddressModel(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    phone: phone ?? this.phone,
+    addressType: addressType ?? this.addressType,
+    email: email ?? this.email,
+    street: street ?? this.street,
+    position: position ?? this.position,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
 
   factory AddressModel.fromSnapshot(DocumentSnapshot snap) => AddressModel(
-        id: snap.id,
-        name: snap[FirestoreFields.name],
-        mobile: snap[FirestoreFields.mobile],
-        addressType:
-            snap.data().toString().contains(FirestoreFields.addressType)
-                ? snap[FirestoreFields.addressType]
-                : 'Home',
-        email: snap[FirestoreFields.email],
-        street: snap[FirestoreFields.street],
-        position: PositionModel.fromSnapshot(snap[FirestoreFields.position]),
-        status: snap[FirestoreFields.status],
-        createdAt: snap[FirestoreFields.createdAt],
-        updatedAt: snap[FirestoreFields.updatedAt],
-      );
+    id: snap.id,
+    name: snap[Fields.name],
+    phone: snap[Fields.phone],
+    addressType: snap.data().toString().contains(Fields.addressType)
+        ? snap[Fields.addressType]
+        : 'Home',
+    email: snap[Fields.email],
+    street: snap[Fields.street],
+    position: PositionModel.fromSnapshot(snap[Fields.position]),
+    status: snap[Fields.status],
+    createdAt: snap[Fields.createdAt],
+    updatedAt: snap[Fields.updatedAt],
+  );
 
   @override
   String toString() =>
-      'AddressModel(id: $id, name: $name, mobile: $mobile, addressType $addressType, email: $email, street: $street, position: $position, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
+      'AddressModel(id: $id, name: $name, phone: $phone, addressType $addressType, email: $email, street: $street, position: $position, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
 
   @override
   bool operator ==(covariant AddressModel other) {
@@ -80,7 +78,7 @@ class AddressModel {
 
     return other.id == id &&
         other.name == name &&
-        other.mobile == mobile &&
+        other.phone == phone &&
         other.addressType == addressType &&
         other.email == email &&
         other.street == street &&
@@ -94,7 +92,7 @@ class AddressModel {
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
-      mobile.hashCode ^
+      phone.hashCode ^
       addressType.hashCode ^
       email.hashCode ^
       street.hashCode ^

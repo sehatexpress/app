@@ -8,7 +8,7 @@ class QueryModel {
   final String? id;
   final String uid;
   final String message;
-  final String mobile;
+  final String phone;
   final String name;
   final TicketStatusEnum status;
   final int? createdAt;
@@ -19,7 +19,7 @@ class QueryModel {
     this.id,
     required this.uid,
     required this.message,
-    required this.mobile,
+    required this.phone,
     required this.name,
     this.status = TicketStatusEnum.pending,
     this.createdAt,
@@ -32,7 +32,7 @@ class QueryModel {
     String? id,
     String? uid,
     String? message,
-    String? mobile,
+    String? phone,
     String? name,
     TicketStatusEnum? status,
     int? createdAt,
@@ -44,7 +44,7 @@ class QueryModel {
         id: id ?? this.id,
         uid: uid ?? this.uid,
         message: message ?? this.message,
-        mobile: mobile ?? this.mobile,
+        phone: phone ?? this.phone,
         name: name ?? this.name,
         status: status ?? this.status,
         createdAt: createdAt ?? this.createdAt,
@@ -56,7 +56,7 @@ class QueryModel {
   Map<String, dynamic> toMap() => <String, dynamic>{
         'uid': uid,
         'message': message,
-        'mobile': mobile,
+        'phone': phone,
         'name': name,
         'status': 'pending',
         'createdAt': DateTime.now().millisecondsSinceEpoch,
@@ -70,7 +70,7 @@ class QueryModel {
         uid: snap['uid'],
         message: snap['message'],
         name: snap['name'],
-        mobile: snap['mobile'],
+        phone: snap['phone'],
         status: convertToTicketStatus(snap['status']),
         createdAt: snap['createdAt'],
         createdBy: snap['createdBy'],
@@ -80,7 +80,7 @@ class QueryModel {
 
   @override
   String toString() =>
-      'QueryModel(id: $id, uid: $uid, message: $message, mobile: $mobile, name: $name, status: $status, createdAt: $createdAt, createdBy: $createdBy, updatedAt: $updatedAt, updatedBy: $updatedBy)';
+      'QueryModel(id: $id, uid: $uid, message: $message, phone: $phone, name: $name, status: $status, createdAt: $createdAt, createdBy: $createdBy, updatedAt: $updatedAt, updatedBy: $updatedBy)';
 
   @override
   bool operator ==(covariant QueryModel other) {
@@ -89,7 +89,7 @@ class QueryModel {
     return other.id == id &&
         other.uid == uid &&
         other.message == message &&
-        other.mobile == mobile &&
+        other.phone == phone &&
         other.name == name &&
         other.status == status &&
         other.createdAt == createdAt &&
@@ -103,7 +103,7 @@ class QueryModel {
       id.hashCode ^
       uid.hashCode ^
       message.hashCode ^
-      mobile.hashCode ^
+      phone.hashCode ^
       name.hashCode ^
       status.hashCode ^
       createdAt.hashCode ^

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show ConsumerWidget, WidgetRef;
-import '../../config/extensions.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../config/extensions.dart';
 import '../../providers/basket_provider.dart' show basketProvider;
 import '../../screens/root/basket_screen.dart';
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart' show immutable;
 import 'package:hooks_riverpod/hooks_riverpod.dart' show Provider;
 
 import '../config/extensions.dart' show FirebaseErrorHandler;
+import '../config/string_constants.dart';
 
 final _auth = FirebaseAuth.instance;
 
@@ -12,33 +13,38 @@ class AuthService {
   User? get currentUser => _auth.currentUser;
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  Future<void> verifyPhone({
-    required String phone,
-    required Function(String verificationId, int? resendToken) onCodeSent,
-    required Function(PhoneAuthCredential) onVerified,
-    required Function(FirebaseAuthException) onFailed,
-    required Function(String) onAutoRetrievalTimeout,
-    int? forceResendingToken,
-  }) async {
+  // reload user
+  Future<User?> reloadUser() async {
     try {
-      await _auth.verifyPhoneNumber(
-        phoneNumber: phone,
-        timeout: const Duration(seconds: 60),
-        verificationCompleted: onVerified,
-        verificationFailed: onFailed,
-        codeSent: onCodeSent,
-        codeAutoRetrievalTimeout: onAutoRetrievalTimeout,
-        forceResendingToken: forceResendingToken,
-      );
+      if (_auth.currentUser == null) throw Strings.loginBeforeProceeding;
+      await _auth.currentUser!.reload();
+      return _auth.currentUser;
     } catch (e) {
       throw e.firebaseErrorMessage;
     }
   }
 
-  Future<User?> signInWithCredential(AuthCredential credential) async {
+  // 🔹 login with custom token
+  Future<User?> loginWithToken(String token) async {
     try {
-      final result = await _auth.signInWithCredential(credential);
-      return result.user;
+      final userCred = await _auth.signInWithCustomToken(token);
+      return userCred.user;
+    } catch (e) {
+      throw e.firebaseErrorMessage;
+    }
+  }
+
+  // 🔹 Login with email & password
+  Future<User?> loginWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final userCred = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCred.user;
     } catch (e) {
       throw e.firebaseErrorMessage;
     }

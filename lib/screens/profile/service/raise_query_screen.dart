@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../widgets/inputs/message_input_widget.dart';
-import '../../../widgets/inputs/mobile_input_widget.dart';
-import '../../../widgets/inputs/name_input_widget.dart';
+import '../../../widgets/inputs/phone_input.dart';
+import '../../../widgets/inputs/name_input.dart';
 
 class RaiseQueryScreen extends HookWidget {
   const RaiseQueryScreen({super.key});
@@ -16,17 +16,15 @@ class RaiseQueryScreen extends HookWidget {
     var phone = useTextEditingController();
     var message = useTextEditingController();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Submit Your Query'),
-      ),
+      appBar: AppBar(title: const Text('Submit Your Query')),
       body: Form(
         key: formKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            NameInputWidget(controller: name),
+            NameInput(controller: name),
             const SizedBox(height: 12),
-            MobileInputWidget(controller: phone),
+            PhoneInput(controller: phone),
             const SizedBox(height: 12),
             MessageInputWidget(controller: message),
           ],

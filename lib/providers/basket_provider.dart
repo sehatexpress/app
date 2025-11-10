@@ -2,6 +2,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hooks_riverpod/legacy.dart';
 
 import '../config/extensions.dart' show StringExtensions;
 import '../providers/auth_provider.dart' show authUidProvider;
@@ -147,7 +148,7 @@ class BasketNotifier extends StateNotifier<BasketState> {
           .getAddress(cords.latitude, cords.longitude);
       AddressModel address = AddressModel(
         name: auth.name,
-        mobile: auth.mobile,
+        phone: auth.phone,
         street: location.displayName,
         position: position,
       );

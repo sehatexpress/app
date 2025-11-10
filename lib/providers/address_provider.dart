@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hooks_riverpod/legacy.dart';
 
 import '../config/string_constants.dart' show Strings;
 import '../services/address_service.dart';
@@ -28,7 +29,7 @@ class AddressStateNotifier extends StateNotifier<void> {
   // 🔹 Add address
   Future<void> addAddress({
     required String name,
-    required String mobile,
+    required String phone,
     required String type,
     required String address,
     required double latitude,
@@ -38,7 +39,7 @@ class AddressStateNotifier extends StateNotifier<void> {
       return ref.read(addressServiceProvider).addAddress(
             uid: uid,
             name: name,
-            mobile: mobile,
+            phone: phone,
             type: type,
             address: address,
             latitude: latitude,
@@ -51,7 +52,7 @@ class AddressStateNotifier extends StateNotifier<void> {
   Future<void> updateAddress({
     required String addressId,
     required String name,
-    required String mobile,
+    required String phone,
     required String type,
     required String address,
     required double latitude,
@@ -62,7 +63,7 @@ class AddressStateNotifier extends StateNotifier<void> {
             addressId: addressId,
             uid: uid,
             name: name,
-            mobile: mobile,
+            phone: phone,
             type: type,
             address: address,
             latitude: latitude,

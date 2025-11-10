@@ -4,7 +4,7 @@ import '../config/extensions.dart'
     show DateTimeExtensions, OrderStatusEnumExtension, OrderStatusValue;
 
 import '../config/enums.dart' show OrderStatusEnum;
-import '../config/string_constants.dart' show FirestoreFields;
+import '../config/string_constants.dart' show Fields;
 import 'basket_item.dart';
 import 'position_model.dart';
 
@@ -148,170 +148,162 @@ class OrderModel {
     String? cancellationReason,
     String? date,
     bool? defaultConfirmed,
-  }) =>
-      OrderModel(
-        id: id ?? this.id,
-        orderOTP: orderOTP ?? this.orderOTP,
-        restaurantId: restaurantId ?? this.restaurantId,
-        restaurantName: restaurantName ?? this.restaurantName,
-        restaurantImage: restaurantImage ?? this.restaurantImage,
-        restaurantCity: restaurantCity ?? this.restaurantCity,
-        restaurantStreet: restaurantStreet ?? this.restaurantStreet,
-        restaurantNumber: restaurantNumber ?? this.restaurantNumber,
-        restaurantPosition: restaurantPosition ?? this.restaurantPosition,
-        userId: userId ?? this.userId,
-        userName: userName ?? this.userName,
-        userEmail: userEmail ?? this.userEmail,
-        userPhoneNumber: userPhoneNumber ?? this.userPhoneNumber,
-        deliveryAddressPersonName:
-            deliveryAddressPersonName ?? this.deliveryAddressPersonName,
-        deliveryAddressPersonPhoneNumber: deliveryAddressPersonPhoneNumber ??
-            this.deliveryAddressPersonPhoneNumber,
-        deliveryAddressStreet:
-            deliveryAddressStreet ?? this.deliveryAddressStreet,
-        deliveryAddressPosition:
-            deliveryAddressPosition ?? this.deliveryAddressPosition,
-        items: items ?? this.items,
-        itemTotal: itemTotal ?? this.itemTotal,
-        deliveryCharge: deliveryCharge ?? this.deliveryCharge,
-        discount: discount ?? this.discount,
-        discountVoucherId: discountVoucherId ?? this.discountVoucherId,
-        discountVoucherCode: discountVoucherCode ?? this.discountVoucherCode,
-        tip: tip ?? this.tip,
-        grandTotal: grandTotal ?? this.grandTotal,
-        deliveryPersonId: deliveryPersonId ?? this.deliveryPersonId,
-        deliveryPersonName: deliveryPersonName ?? this.deliveryPersonName,
-        deliveryPersonPhoneNumber:
-            deliveryPersonPhoneNumber ?? this.deliveryPersonPhoneNumber,
-        deliveryPersonImage: deliveryPersonImage ?? this.deliveryPersonImage,
-        deliveryPersonPosition:
-            deliveryPersonPosition ?? this.deliveryPersonPosition,
-        progress: progress ?? this.progress,
-        status: status ?? this.status,
-        orderedDate: orderedDate ?? this.orderedDate,
-        acceptedDate: acceptedDate ?? this.acceptedDate,
-        confirmedDate: confirmedDate ?? this.confirmedDate,
-        pickedDate: pickedDate ?? this.pickedDate,
-        deliveredDate: deliveredDate ?? this.deliveredDate,
-        cancelledDate: cancelledDate ?? this.cancelledDate,
-        cancellationReason: cancellationReason ?? this.cancellationReason,
-        updatedDate: updatedDate ?? this.updatedDate,
-        date: date ?? this.date,
-        defaultConfirmed: defaultConfirmed ?? this.defaultConfirmed,
-      );
+  }) => OrderModel(
+    id: id ?? this.id,
+    orderOTP: orderOTP ?? this.orderOTP,
+    restaurantId: restaurantId ?? this.restaurantId,
+    restaurantName: restaurantName ?? this.restaurantName,
+    restaurantImage: restaurantImage ?? this.restaurantImage,
+    restaurantCity: restaurantCity ?? this.restaurantCity,
+    restaurantStreet: restaurantStreet ?? this.restaurantStreet,
+    restaurantNumber: restaurantNumber ?? this.restaurantNumber,
+    restaurantPosition: restaurantPosition ?? this.restaurantPosition,
+    userId: userId ?? this.userId,
+    userName: userName ?? this.userName,
+    userEmail: userEmail ?? this.userEmail,
+    userPhoneNumber: userPhoneNumber ?? this.userPhoneNumber,
+    deliveryAddressPersonName:
+        deliveryAddressPersonName ?? this.deliveryAddressPersonName,
+    deliveryAddressPersonPhoneNumber:
+        deliveryAddressPersonPhoneNumber ??
+        this.deliveryAddressPersonPhoneNumber,
+    deliveryAddressStreet: deliveryAddressStreet ?? this.deliveryAddressStreet,
+    deliveryAddressPosition:
+        deliveryAddressPosition ?? this.deliveryAddressPosition,
+    items: items ?? this.items,
+    itemTotal: itemTotal ?? this.itemTotal,
+    deliveryCharge: deliveryCharge ?? this.deliveryCharge,
+    discount: discount ?? this.discount,
+    discountVoucherId: discountVoucherId ?? this.discountVoucherId,
+    discountVoucherCode: discountVoucherCode ?? this.discountVoucherCode,
+    tip: tip ?? this.tip,
+    grandTotal: grandTotal ?? this.grandTotal,
+    deliveryPersonId: deliveryPersonId ?? this.deliveryPersonId,
+    deliveryPersonName: deliveryPersonName ?? this.deliveryPersonName,
+    deliveryPersonPhoneNumber:
+        deliveryPersonPhoneNumber ?? this.deliveryPersonPhoneNumber,
+    deliveryPersonImage: deliveryPersonImage ?? this.deliveryPersonImage,
+    deliveryPersonPosition:
+        deliveryPersonPosition ?? this.deliveryPersonPosition,
+    progress: progress ?? this.progress,
+    status: status ?? this.status,
+    orderedDate: orderedDate ?? this.orderedDate,
+    acceptedDate: acceptedDate ?? this.acceptedDate,
+    confirmedDate: confirmedDate ?? this.confirmedDate,
+    pickedDate: pickedDate ?? this.pickedDate,
+    deliveredDate: deliveredDate ?? this.deliveredDate,
+    cancelledDate: cancelledDate ?? this.cancelledDate,
+    cancellationReason: cancellationReason ?? this.cancellationReason,
+    updatedDate: updatedDate ?? this.updatedDate,
+    date: date ?? this.date,
+    defaultConfirmed: defaultConfirmed ?? this.defaultConfirmed,
+  );
 
   Map<String, dynamic> toDocument() => {
-        FirestoreFields.orderOTP: orderOTP,
-        FirestoreFields.restaurantId: restaurantId,
-        FirestoreFields.restaurantName: restaurantName,
-        FirestoreFields.restaurantImage: restaurantImage,
-        FirestoreFields.restaurantCity: restaurantCity,
-        FirestoreFields.restaurantStreet: restaurantStreet,
-        FirestoreFields.restaurantNumber: restaurantNumber,
-        FirestoreFields.restaurantPosition: restaurantPosition.toDocument(),
-        FirestoreFields.userId: userId,
-        FirestoreFields.userName: userName,
-        FirestoreFields.userEmail: userEmail,
-        FirestoreFields.userPhoneNumber: userPhoneNumber,
-        FirestoreFields.deliveryAddressPersonName: deliveryAddressPersonName,
-        FirestoreFields.deliveryAddressPersonPhoneNumber:
-            deliveryAddressPersonPhoneNumber,
-        FirestoreFields.deliveryAddressStreet: deliveryAddressStreet,
-        FirestoreFields.deliveryAddressPosition:
-            deliveryAddressPosition.toDocument(),
-        FirestoreFields.items: items.map((e) => e.toDocument()).toList(),
-        FirestoreFields.itemTotal: itemTotal,
-        FirestoreFields.deliveryCharge: deliveryCharge,
-        FirestoreFields.discount: discount,
-        FirestoreFields.discountVoucherId: discountVoucherId,
-        FirestoreFields.discountVoucherCode: discountVoucherCode,
-        FirestoreFields.tip: tip,
-        FirestoreFields.grandTotal: grandTotal,
-        FirestoreFields.deliveryPersonId: null,
-        FirestoreFields.deliveryPersonName: null,
-        FirestoreFields.deliveryPersonPhoneNumber: null,
-        FirestoreFields.deliveryPersonImage: null,
-        FirestoreFields.deliveryPersonPosition: null,
-        FirestoreFields.progress: false,
-        FirestoreFields.status: OrderStatusEnum.ordered.value,
-        FirestoreFields.orderedDate: DateTime.now().millisecondsSinceEpoch,
-        FirestoreFields.acceptedDate: null,
-        FirestoreFields.confirmedDate: null,
-        FirestoreFields.pickedDate: null,
-        FirestoreFields.deliveredDate: null,
-        FirestoreFields.cancelledDate: null,
-        FirestoreFields.cancellationReason: null,
-        FirestoreFields.updatedDate: DateTime.now().millisecondsSinceEpoch,
-        FirestoreFields.commission: 0,
-        FirestoreFields.restaurantBalance: 0,
-        FirestoreFields.deliveryPersonBalance: 0,
-        FirestoreFields.date:
-            DateTime.now().millisecondsSinceEpoch.formattedDate,
-        FirestoreFields.platform: kIsWeb ? 'web' : 'mobile',
-        FirestoreFields.defaultConfirmed: defaultConfirmed,
-      };
+    Fields.orderOTP: orderOTP,
+    Fields.restaurantId: restaurantId,
+    Fields.restaurantName: restaurantName,
+    Fields.restaurantImage: restaurantImage,
+    Fields.restaurantCity: restaurantCity,
+    Fields.restaurantStreet: restaurantStreet,
+    Fields.restaurantNumber: restaurantNumber,
+    Fields.restaurantPosition: restaurantPosition.toDocument(),
+    Fields.userId: userId,
+    Fields.userName: userName,
+    Fields.userEmail: userEmail,
+    Fields.userPhoneNumber: userPhoneNumber,
+    Fields.deliveryAddressPersonName: deliveryAddressPersonName,
+    Fields.deliveryAddressPersonPhoneNumber: deliveryAddressPersonPhoneNumber,
+    Fields.deliveryAddressStreet: deliveryAddressStreet,
+    Fields.deliveryAddressPosition: deliveryAddressPosition.toDocument(),
+    Fields.items: items.map((e) => e.toDocument()).toList(),
+    Fields.itemTotal: itemTotal,
+    Fields.deliveryCharge: deliveryCharge,
+    Fields.discount: discount,
+    Fields.discountVoucherId: discountVoucherId,
+    Fields.discountVoucherCode: discountVoucherCode,
+    Fields.tip: tip,
+    Fields.grandTotal: grandTotal,
+    Fields.deliveryPersonId: null,
+    Fields.deliveryPersonName: null,
+    Fields.deliveryPersonPhoneNumber: null,
+    Fields.deliveryPersonImage: null,
+    Fields.deliveryPersonPosition: null,
+    Fields.progress: false,
+    Fields.status: OrderStatusEnum.ordered.value,
+    Fields.orderedDate: DateTime.now().millisecondsSinceEpoch,
+    Fields.acceptedDate: null,
+    Fields.confirmedDate: null,
+    Fields.pickedDate: null,
+    Fields.deliveredDate: null,
+    Fields.cancelledDate: null,
+    Fields.cancellationReason: null,
+    Fields.updatedDate: DateTime.now().millisecondsSinceEpoch,
+    Fields.commission: 0,
+    Fields.restaurantBalance: 0,
+    Fields.deliveryPersonBalance: 0,
+    Fields.date: DateTime.now().millisecondsSinceEpoch.formattedDate,
+    Fields.platform: kIsWeb ? 'web' : 'mobile',
+    Fields.defaultConfirmed: defaultConfirmed,
+  };
 
   factory OrderModel.fromSnapshot(DocumentSnapshot snap) => OrderModel(
-        id: snap.id,
-        orderOTP: snap[FirestoreFields.orderOTP],
-        restaurantId: snap[FirestoreFields.restaurantId],
-        restaurantName: snap[FirestoreFields.restaurantName],
-        restaurantImage: snap[FirestoreFields.restaurantImage],
-        restaurantCity: snap[FirestoreFields.restaurantCity],
-        restaurantStreet: snap[FirestoreFields.restaurantStreet],
-        restaurantNumber:
-            snap.data().toString().contains(FirestoreFields.restaurantNumber)
-                ? snap[FirestoreFields.restaurantNumber]
-                : '9876543210',
-        restaurantPosition: PositionModel.fromSnapshot(
-            snap[FirestoreFields.restaurantPosition]),
-        userId: snap[FirestoreFields.userId],
-        userName: snap[FirestoreFields.userName],
-        userEmail: snap[FirestoreFields.userEmail],
-        userPhoneNumber: snap[FirestoreFields.userPhoneNumber],
-        deliveryAddressPersonName:
-            snap[FirestoreFields.deliveryAddressPersonName],
-        deliveryAddressPersonPhoneNumber:
-            snap[FirestoreFields.deliveryAddressPersonPhoneNumber],
-        deliveryAddressStreet: snap[FirestoreFields.deliveryAddressStreet],
-        deliveryAddressPosition: PositionModel.fromSnapshot(
-            snap[FirestoreFields.deliveryAddressPosition]),
-        items: snap[FirestoreFields.items]
-            .map<BasketItem>((e) => BasketItem.fromSnapshot(e))
-            .toList(),
-        itemTotal: snap[FirestoreFields.itemTotal],
-        deliveryCharge: snap[FirestoreFields.deliveryCharge],
-        discount: snap[FirestoreFields.discount],
-        discountVoucherId: snap[FirestoreFields.discountVoucherId],
-        discountVoucherCode: snap[FirestoreFields.discountVoucherCode],
-        tip: snap[FirestoreFields.tip],
-        grandTotal: snap[FirestoreFields.grandTotal],
-        deliveryPersonId: snap[FirestoreFields.deliveryPersonId],
-        deliveryPersonName: snap[FirestoreFields.deliveryPersonName],
-        deliveryPersonPhoneNumber:
-            snap[FirestoreFields.deliveryPersonPhoneNumber],
-        deliveryPersonImage: snap[FirestoreFields.deliveryPersonImage],
-        deliveryPersonPosition:
-            snap.get(FirestoreFields.deliveryPersonPosition) != null
-                ? PositionModel.fromSnapshot(
-                    snap[FirestoreFields.deliveryPersonPosition])
-                : null,
-        progress: snap[FirestoreFields.progress],
-        status:
-            OrderStatusEnumExtension.fromString(snap[FirestoreFields.status]),
-        orderedDate: snap[FirestoreFields.orderedDate],
-        acceptedDate: snap[FirestoreFields.acceptedDate],
-        confirmedDate: snap[FirestoreFields.confirmedDate],
-        pickedDate: snap[FirestoreFields.pickedDate],
-        deliveredDate: snap[FirestoreFields.deliveredDate],
-        cancelledDate: snap[FirestoreFields.cancelledDate],
-        cancellationReason: snap[FirestoreFields.cancellationReason],
-        updatedDate: snap[FirestoreFields.updatedDate],
-        date: snap[FirestoreFields.date],
-        defaultConfirmed: snap.toString().contains('defaultConfirmed')
-            ? snap[FirestoreFields.defaultConfirmed]
-            : false,
-      );
+    id: snap.id,
+    orderOTP: snap[Fields.orderOTP],
+    restaurantId: snap[Fields.restaurantId],
+    restaurantName: snap[Fields.restaurantName],
+    restaurantImage: snap[Fields.restaurantImage],
+    restaurantCity: snap[Fields.restaurantCity],
+    restaurantStreet: snap[Fields.restaurantStreet],
+    restaurantNumber: snap.data().toString().contains(Fields.restaurantNumber)
+        ? snap[Fields.restaurantNumber]
+        : '9876543210',
+    restaurantPosition: PositionModel.fromSnapshot(
+      snap[Fields.restaurantPosition],
+    ),
+    userId: snap[Fields.userId],
+    userName: snap[Fields.userName],
+    userEmail: snap[Fields.userEmail],
+    userPhoneNumber: snap[Fields.userPhoneNumber],
+    deliveryAddressPersonName: snap[Fields.deliveryAddressPersonName],
+    deliveryAddressPersonPhoneNumber:
+        snap[Fields.deliveryAddressPersonPhoneNumber],
+    deliveryAddressStreet: snap[Fields.deliveryAddressStreet],
+    deliveryAddressPosition: PositionModel.fromSnapshot(
+      snap[Fields.deliveryAddressPosition],
+    ),
+    items: snap[Fields.items]
+        .map<BasketItem>((e) => BasketItem.fromSnapshot(e))
+        .toList(),
+    itemTotal: snap[Fields.itemTotal],
+    deliveryCharge: snap[Fields.deliveryCharge],
+    discount: snap[Fields.discount],
+    discountVoucherId: snap[Fields.discountVoucherId],
+    discountVoucherCode: snap[Fields.discountVoucherCode],
+    tip: snap[Fields.tip],
+    grandTotal: snap[Fields.grandTotal],
+    deliveryPersonId: snap[Fields.deliveryPersonId],
+    deliveryPersonName: snap[Fields.deliveryPersonName],
+    deliveryPersonPhoneNumber: snap[Fields.deliveryPersonPhoneNumber],
+    deliveryPersonImage: snap[Fields.deliveryPersonImage],
+    deliveryPersonPosition: snap.get(Fields.deliveryPersonPosition) != null
+        ? PositionModel.fromSnapshot(snap[Fields.deliveryPersonPosition])
+        : null,
+    progress: snap[Fields.progress],
+    status: OrderStatusEnumExtension.fromString(snap[Fields.status]),
+    orderedDate: snap[Fields.orderedDate],
+    acceptedDate: snap[Fields.acceptedDate],
+    confirmedDate: snap[Fields.confirmedDate],
+    pickedDate: snap[Fields.pickedDate],
+    deliveredDate: snap[Fields.deliveredDate],
+    cancelledDate: snap[Fields.cancelledDate],
+    cancellationReason: snap[Fields.cancellationReason],
+    updatedDate: snap[Fields.updatedDate],
+    date: snap[Fields.date],
+    defaultConfirmed: snap.toString().contains('defaultConfirmed')
+        ? snap[Fields.defaultConfirmed]
+        : false,
+  );
 
   @override
   String toString() =>

@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart' show ColorConstants;
 import '../../config/typo_config.dart';
-import '../inputs/password_input_widget.dart';
+import '../inputs/password_input.dart';
 
 class UpdatePasswordWidget extends HookConsumerWidget {
   const UpdatePasswordWidget({super.key});
@@ -20,15 +20,12 @@ class UpdatePasswordWidget extends HookConsumerWidget {
         shrinkWrap: true,
         padding: EdgeInsets.all(16.0),
         children: [
-          PasswordInputWidget(
+          PasswordInput(
             controller: currentPassword,
             hintText: 'Current Password*',
           ),
           const SizedBox(height: 12),
-          PasswordInputWidget(
-            controller: newPassword,
-            hintText: 'New Password*',
-          ),
+          PasswordInput(controller: newPassword, hintText: 'New Password*'),
           const SizedBox(height: 16),
           TextButton(
             onPressed: () {
@@ -42,8 +39,9 @@ class UpdatePasswordWidget extends HookConsumerWidget {
             ),
             child: Text(
               'Update Password',
-              style: typoConfig.textStyle.buttonsButtonSmall
-                  .copyWith(color: Colors.white),
+              style: typoConfig.textStyle.buttonsButtonSmall.copyWith(
+                color: Colors.white,
+              ),
             ),
           ),
         ],

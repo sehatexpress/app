@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show AsyncValueX, ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../config/extensions.dart' show StringExtensions;
-import '../../../helper/helper.dart' show openBottombarForAddress;
-import '../../../config/string_constants.dart' show Strings;
 import '../../../config/constants.dart' show ColorConstants;
+import '../../../config/extensions.dart';
 import '../../../config/typo_config.dart';
+import '../../../helper/helper.dart' show openBottombarForAddress;
 import '../../../providers/address_provider.dart' show addressProvider;
 import '../../../providers/lists_provider.dart' show addressListProvider;
-import '../../../widgets/dialogs/generic_dialog.dart';
 import '../../../widgets/generic/loader_widget.dart';
-import '../../../widgets/dialogs/alert_dialog_model.dart';
 
 class DeliveryAddressesScreen extends ConsumerWidget {
   const DeliveryAddressesScreen({super.key});
@@ -25,16 +21,10 @@ class DeliveryAddressesScreen extends ConsumerWidget {
         title: Text('Delivery Address'),
         actions: [
           Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: 16,
-            ),
+            margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: OutlinedButton.icon(
               style: TextButton.styleFrom(
-                side: BorderSide(
-                  width: .75,
-                  color: Colors.white,
-                ),
+                side: BorderSide(width: .75, color: Colors.white),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),
                 ),
@@ -44,14 +34,11 @@ class DeliveryAddressesScreen extends ConsumerWidget {
               },
               label: Text(
                 'New',
-                style: typoConfig.textStyle.largeCaptionLabel3Bold
-                    .copyWith(color: Colors.white),
+                style: typoConfig.textStyle.largeCaptionLabel3Bold.copyWith(
+                  color: Colors.white,
+                ),
               ),
-              icon: Icon(
-                Icons.add_rounded,
-                color: Colors.white,
-                size: 16,
-              ),
+              icon: Icon(Icons.add_rounded, color: Colors.white, size: 16),
             ),
           ),
         ],
@@ -64,16 +51,13 @@ class DeliveryAddressesScreen extends ConsumerWidget {
               itemBuilder: (_, i) => ListTile(
                 dense: true,
                 onTap: () {
-                  openBottombarForAddress(
-                    context: context,
-                    model: lists[i],
-                  );
+                  openBottombarForAddress(context: context, model: lists[i]);
                 },
                 leading: CircleAvatar(
                   child: Text(lists[i].name.initialLetters),
                 ),
                 title: Text(
-                  '${lists[i].name}, ${lists[i].mobile}',
+                  '${lists[i].name}, ${lists[i].phone}',
                   style: typoConfig.textStyle.smallCaptionSubtitle1,
                 ),
                 subtitle: Text(
@@ -85,10 +69,12 @@ class DeliveryAddressesScreen extends ConsumerWidget {
                   height: 32,
                   child: IconButton(
                     onPressed: () async {
-                      var result = await GenericDialog(Strings.delete)
-                          .present(context)
-                          .then((val) => val ?? false);
-                      if (result) {
+                      var result = await context.showGenericDialog(
+                        title: 'Delete Address?',
+                        content:
+                            'Are you sure, you want to delete the address?',
+                      );
+                      if (result == true) {
                         ref
                             .read(addressProvider.notifier)
                             .deleteAddress(lists[i].id!);
@@ -106,16 +92,10 @@ class DeliveryAddressesScreen extends ConsumerWidget {
               itemCount: lists.length,
             );
           }
-          return Center(
-            child: Text('No address found'),
-          );
+          return Center(child: Text('No address found'));
         },
-        error: (error, stackTrace) => Center(
-          child: Text(error.toString()),
-        ),
-        loading: () => Center(
-          child: LoaderWidget(),
-        ),
+        error: (error, stackTrace) => Center(child: Text(error.toString())),
+        loading: () => Center(child: LoaderWidget()),
       ),
     );
   }

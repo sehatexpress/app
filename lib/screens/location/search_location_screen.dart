@@ -1,8 +1,6 @@
-import 'package:carousel_slider/carousel_slider.dart'
-    show CarouselOptions, CarouselSlider;
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart' show ColorConstants;
 import '../../config/typo_config.dart';

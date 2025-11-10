@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:hooks_riverpod/hooks_riverpod.dart' show Provider;
 import '../config/extensions.dart' show FirebaseErrorHandler;
-import '../config/string_constants.dart'
-    show CollectionConstants, FirestoreFields;
+import '../config/string_constants.dart' show CollectionConstants, Fields;
 import '../models/address_model.dart';
 import '../models/position_model.dart';
 import 'geo_position_service.dart' show geoPositionService;
@@ -19,10 +18,12 @@ class AddressService {
       return _colRef
           .doc(uid)
           .collection('address')
-          .orderBy(FirestoreFields.createdAt, descending: true)
+          .orderBy(Fields.createdAt, descending: true)
           .snapshots()
-          .map((docs) =>
-              docs.docs.map((doc) => AddressModel.fromSnapshot(doc)).toList());
+          .map(
+            (docs) =>
+                docs.docs.map((doc) => AddressModel.fromSnapshot(doc)).toList(),
+          );
     } catch (e) {
       throw e.firebaseErrorMessage;
     }
@@ -40,7 +41,7 @@ class AddressService {
   Future<void> addAddress({
     required String uid,
     required String name,
-    required String mobile,
+    required String phone,
     String? email,
     required String type,
     required String address,
@@ -51,15 +52,15 @@ class AddressService {
       PositionModel position = await _getPosition(latitude, longitude);
 
       final map = {
-        FirestoreFields.name: name,
-        FirestoreFields.mobile: mobile,
-        FirestoreFields.addressType: type,
-        FirestoreFields.email: email,
-        FirestoreFields.street: address,
-        FirestoreFields.position: position.toDocument(),
-        FirestoreFields.status: true,
-        FirestoreFields.createdAt: DateTime.now().millisecondsSinceEpoch,
-        FirestoreFields.updatedAt: null,
+        Fields.name: name,
+        Fields.phone: phone,
+        Fields.addressType: type,
+        Fields.email: email,
+        Fields.street: address,
+        Fields.position: position.toDocument(),
+        Fields.status: true,
+        Fields.createdAt: DateTime.now().millisecondsSinceEpoch,
+        Fields.updatedAt: null,
       };
 
       await _colRef.doc(uid).collection('address').add(map);
@@ -73,7 +74,7 @@ class AddressService {
     required String uid,
     required String addressId,
     required String name,
-    required String mobile,
+    required String phone,
     required String type,
     required String address,
     required double latitude,
@@ -83,12 +84,12 @@ class AddressService {
       PositionModel position = await _getPosition(latitude, longitude);
 
       final map = {
-        FirestoreFields.name: name,
-        FirestoreFields.mobile: mobile,
-        FirestoreFields.addressType: type,
-        FirestoreFields.street: address,
-        FirestoreFields.position: position.toDocument(),
-        FirestoreFields.updatedAt: DateTime.now().millisecondsSinceEpoch,
+        Fields.name: name,
+        Fields.phone: phone,
+        Fields.addressType: type,
+        Fields.street: address,
+        Fields.position: position.toDocument(),
+        Fields.updatedAt: DateTime.now().millisecondsSinceEpoch,
       };
 
       await _colRef.doc(uid).collection('address').doc(addressId).update(map);
@@ -97,16 +98,16 @@ class AddressService {
     }
   }
 
-  // 🔹 Validate mobile number (optimized)
-  Future<bool> validateMobile({
+  // 🔹 Validate phone number (optimized)
+  Future<bool> validatephone({
     required String uid,
-    required String mobile,
+    required String phone,
   }) async {
     try {
       var res = await _colRef
           .doc(uid)
           .collection('address')
-          .where(FirestoreFields.mobile, isEqualTo: mobile)
+          .where(Fields.phone, isEqualTo: phone)
           .limit(1)
           .get();
 

@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart' show GeolocatorPlatform, Position;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hooks_riverpod/legacy.dart';
 
 import '../config/string_constants.dart' show LocationStrings;
 import '../models/location_model.dart';

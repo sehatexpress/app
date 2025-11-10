@@ -1,8 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart' show Provider;
 
 import '../config/extensions.dart' show FirebaseErrorHandler;
-import '../config/string_constants.dart'
-    show CollectionConstants, FirestoreFields;
+import '../config/string_constants.dart' show CollectionConstants, Fields;
 import '../models/comment_model.dart';
 import '../models/query_model.dart';
 
@@ -15,14 +14,14 @@ class QueryService {
   // submit query
   Future<void> submitQuery({
     required String name,
-    required String mobile,
+    required String phone,
     required String message,
   }) async {
     try {
       QueryModel query = QueryModel(
         uid: uid,
         message: message,
-        mobile: mobile,
+        phone: phone,
         name: name,
       );
       await _ref.add(query.toMap());
@@ -35,11 +34,12 @@ class QueryService {
   Stream<List<QueryModel>> getAllQueries() {
     try {
       return _ref
-          .where(FirestoreFields.uid, isEqualTo: uid)
-          .orderBy(FirestoreFields.createdAt, descending: true)
+          .where(Fields.uid, isEqualTo: uid)
+          .orderBy(Fields.createdAt, descending: true)
           .snapshots()
-          .map((docs) =>
-              docs.docs.map((e) => QueryModel.fromSnapshot(e)).toList());
+          .map(
+            (docs) => docs.docs.map((e) => QueryModel.fromSnapshot(e)).toList(),
+          );
     } catch (e) {
       throw e.firebaseErrorMessage;
     }
@@ -51,10 +51,12 @@ class QueryService {
       return _ref
           .doc(docId)
           .collection('comments')
-          .orderBy(FirestoreFields.createdAt, descending: true)
+          .orderBy(Fields.createdAt, descending: true)
           .snapshots()
-          .map((docs) =>
-              docs.docs.map((e) => CommentModel.fromSnapshot(e)).toList());
+          .map(
+            (docs) =>
+                docs.docs.map((e) => CommentModel.fromSnapshot(e)).toList(),
+          );
     } catch (e) {
       throw e.firebaseErrorMessage;
     }
@@ -75,9 +77,9 @@ class QueryService {
 
       // Update query status
       await _ref.doc(queryId).update({
-        FirestoreFields.status: 'in-process',
-        FirestoreFields.updatedBy: uid,
-        FirestoreFields.updatedAt: updatedAt,
+        Fields.status: 'in-process',
+        Fields.updatedBy: uid,
+        Fields.updatedAt: updatedAt,
       });
     } catch (e) {
       throw e.firebaseErrorMessage;
@@ -85,5 +87,6 @@ class QueryService {
   }
 }
 
-final queryServiceProvider =
-    Provider.family<QueryService, String>((_, userId) => QueryService(userId));
+final queryServiceProvider = Provider.family<QueryService, String>(
+  (_, userId) => QueryService(userId),
+);

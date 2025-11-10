@@ -7,9 +7,9 @@ import '../config/string_constants.dart';
 class UserModel {
   final String uid;
   final String name;
-  final String email;
+  final String? email;
   final int? gender;
-  final String mobile;
+  final String phone;
   final int? points;
   final bool? status;
   final int? createdAt;
@@ -19,9 +19,9 @@ class UserModel {
   const UserModel({
     required this.uid,
     required this.name,
-    required this.email,
+    this.email,
     this.gender,
-    required this.mobile,
+    required this.phone,
     this.points,
     this.status,
     this.createdAt,
@@ -35,49 +35,48 @@ class UserModel {
     String? name,
     String? email,
     int? gender,
-    String? mobile,
+    String? phone,
     int? points,
     bool? status,
     int? createdAt,
     int? updatedAt,
     String? deviceToken,
     int? freeDelivery,
-  }) =>
-      UserModel(
-        uid: uid ?? this.uid,
-        name: name ?? this.name,
-        email: email ?? this.email,
-        gender: gender ?? this.gender,
-        mobile: mobile ?? this.mobile,
-        points: points ?? this.points,
-        status: status ?? this.status,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        deviceToken: deviceToken ?? this.deviceToken,
-        freeDelivery: freeDelivery ?? this.freeDelivery,
-      );
+  }) => UserModel(
+    uid: uid ?? this.uid,
+    name: name ?? this.name,
+    email: email ?? this.email,
+    gender: gender ?? this.gender,
+    phone: phone ?? this.phone,
+    points: points ?? this.points,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deviceToken: deviceToken ?? this.deviceToken,
+    freeDelivery: freeDelivery ?? this.freeDelivery,
+  );
 
   factory UserModel.fromSnapshot(DocumentSnapshot snap) => UserModel(
-        uid: snap.id,
-        name: snap[FirestoreFields.name],
-        gender: snap[FirestoreFields.gender],
-        email: snap[FirestoreFields.email],
-        mobile: snap[FirestoreFields.mobile],
-        points: snap[FirestoreFields.points],
-        status: snap[FirestoreFields.status],
-        createdAt: snap[FirestoreFields.createdAt],
-        updatedAt: snap[FirestoreFields.updatedAt],
-        deviceToken: snap.data().toString().contains(FirestoreFields.deviceToken)
-            ? snap[FirestoreFields.deviceToken]
-            : null,
-        freeDelivery: snap.data().toString().contains(FirestoreFields.freeDelivery)
-            ? snap[FirestoreFields.freeDelivery]
-            : 0,
-      );
+    uid: snap.id,
+    name: snap[Fields.name],
+    gender: snap[Fields.gender],
+    email: snap[Fields.email],
+    phone: snap[Fields.phone],
+    points: snap[Fields.points],
+    status: snap[Fields.status],
+    createdAt: snap[Fields.createdAt],
+    updatedAt: snap[Fields.updatedAt],
+    deviceToken: snap.data().toString().contains(Fields.deviceToken)
+        ? snap[Fields.deviceToken]
+        : null,
+    freeDelivery: snap.data().toString().contains(Fields.freeDelivery)
+        ? snap[Fields.freeDelivery]
+        : 0,
+  );
 
   @override
   String toString() =>
-      'UserModel(uid: $uid, name: $name, email: $email, gender: $gender, mobile: $mobile, points: $points, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, deviceToken: $deviceToken, freeDelivery: $freeDelivery)';
+      'UserModel(uid: $uid, name: $name, email: $email, gender: $gender, phone: $phone, points: $points, status: $status, createdAt: $createdAt, updatedAt: $updatedAt, deviceToken: $deviceToken, freeDelivery: $freeDelivery)';
 
   @override
   bool operator ==(covariant UserModel other) {
@@ -87,7 +86,7 @@ class UserModel {
         other.name == name &&
         other.email == email &&
         other.gender == gender &&
-        other.mobile == mobile &&
+        other.phone == phone &&
         other.points == points &&
         other.status == status &&
         other.createdAt == createdAt &&
@@ -102,7 +101,7 @@ class UserModel {
       name.hashCode ^
       email.hashCode ^
       gender.hashCode ^
-      mobile.hashCode ^
+      phone.hashCode ^
       points.hashCode ^
       status.hashCode ^
       createdAt.hashCode ^

@@ -4,12 +4,9 @@ import 'package:url_launcher/url_launcher.dart' show LaunchMode, launchUrl;
 
 import '../../config/constants.dart';
 import '../../config/extensions.dart';
-import '../../config/string_constants.dart' show Strings;
 import '../../providers/auth_provider.dart' show authProvider;
 import '../../providers/lists_provider.dart' show userDetailProvider;
 import '../../widgets/auth/auth_button_widget.dart';
-import '../../widgets/dialogs/alert_dialog_model.dart';
-import '../../widgets/dialogs/generic_dialog.dart';
 import '../../widgets/generic/data_view_widget.dart';
 import '../../widgets/profile/contactus_widget.dart';
 import '../../widgets/profile/profile_menu_container_widget.dart';
@@ -58,10 +55,11 @@ class ProfileScreen extends ConsumerWidget {
         subtitle: data.email,
         trailing: IconButton(
           onPressed: () async {
-            final result = await GenericDialog(
-              Strings.logout,
-            ).present(context).then((val) => val ?? false);
-            if (result) ref.read(authProvider.notifier).signOut();
+            final result = await context.showGenericDialog(
+              title: 'Logout',
+              content: 'Do you watnt to logout?',
+            );
+            if (result == true) ref.read(authProvider.notifier).logout();
           },
           icon: const Icon(Icons.logout_rounded),
         ),

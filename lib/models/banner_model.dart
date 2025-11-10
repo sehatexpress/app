@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart' show DocumentSnapshot;
 import 'package:flutter/foundation.dart' show immutable;
 
 import '../config/enums.dart' show CityEnum, cityFromString;
-import '../config/string_constants.dart' show FirestoreFields;
+import '../config/string_constants.dart' show Fields;
 
 @immutable
 class BannerModel {
@@ -37,30 +37,29 @@ class BannerModel {
     int? updatedAt,
     String? createdBy,
     String? updatedBy,
-  }) =>
-      BannerModel(
-        id: id ?? this.id,
-        status: status ?? this.status,
-        imageUrl: imageUrl ?? this.imageUrl,
-        restaurantId: restaurantId ?? this.restaurantId,
-        city: city ?? this.city,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        createdBy: createdBy ?? this.createdBy,
-        updatedBy: updatedBy ?? this.updatedBy,
-      );
+  }) => BannerModel(
+    id: id ?? this.id,
+    status: status ?? this.status,
+    imageUrl: imageUrl ?? this.imageUrl,
+    restaurantId: restaurantId ?? this.restaurantId,
+    city: city ?? this.city,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    createdBy: createdBy ?? this.createdBy,
+    updatedBy: updatedBy ?? this.updatedBy,
+  );
 
   factory BannerModel.fromSnapshot(DocumentSnapshot snap) => BannerModel(
-        id: snap.id,
-        status: snap[FirestoreFields.status],
-        imageUrl: snap[FirestoreFields.imageUrl],
-        restaurantId: snap[FirestoreFields.restaurantId],
-        city: cityFromString(snap[FirestoreFields.city]),
-        createdBy: snap[FirestoreFields.createdBy],
-        updatedBy: snap[FirestoreFields.updatedBy],
-        createdAt: snap[FirestoreFields.createdAt],
-        updatedAt: snap[FirestoreFields.updatedAt],
-      );
+    id: snap.id,
+    status: snap[Fields.status],
+    imageUrl: snap[Fields.imageUrl],
+    restaurantId: snap[Fields.restaurantId],
+    city: cityFromString(snap[Fields.city]),
+    createdBy: snap[Fields.createdBy],
+    updatedBy: snap[Fields.updatedBy],
+    createdAt: snap[Fields.createdAt],
+    updatedAt: snap[Fields.updatedAt],
+  );
 
   @override
   String toString() =>

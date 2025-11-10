@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'
-    show FilteringTextInputFormatter, FontWeight, TextAlign, TextInputType;
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' show useTextEditingController;
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show HookConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart' show ColorConstants;
 import '../../config/typo_config.dart' show typoConfig;

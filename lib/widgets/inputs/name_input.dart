@@ -9,14 +9,10 @@ import 'package:flutter/services.dart'
 import '../../config/constants.dart' show ColorConstants;
 import '../../config/utils.dart' show textDecorationTextStyle;
 
-class NameInputWidget extends StatelessWidget {
+class NameInput extends StatelessWidget {
   final TextEditingController controller;
   final bool enabled;
-  const NameInputWidget({
-    super.key,
-    required this.controller,
-    this.enabled = true,
-  });
+  const NameInput({super.key, required this.controller, this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +29,7 @@ class NameInputWidget extends StatelessWidget {
           margin: const EdgeInsets.only(left: 16, right: 10),
           child: const Icon(Icons.person_rounded),
         ),
-        prefixIconConstraints: const BoxConstraints(
-          maxHeight: 40,
-        ),
+        prefixIconConstraints: const BoxConstraints(maxHeight: 40),
       ),
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
@@ -51,8 +45,9 @@ class NameInputWidget extends StatelessWidget {
       ],
       validator: (val) {
         if (val != null) {
-          if (RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$")
-              .hasMatch(val)) {
+          if (RegExp(
+            r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$",
+          ).hasMatch(val)) {
             return null;
           }
         }

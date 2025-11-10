@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart'
-    show AsyncValueX, ConsumerWidget, WidgetRef;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constants.dart' show ColorConstants;
 import '../../config/extensions.dart' show StringExtensions;
@@ -14,9 +13,12 @@ class AddressListsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedAddress =
-        ref.watch(basketProvider.select((state) => state.address));
-    return ref.watch(addressListProvider).when(
+    final selectedAddress = ref.watch(
+      basketProvider.select((state) => state.address),
+    );
+    return ref
+        .watch(addressListProvider)
+        .when(
           data: (addresses) {
             if (addresses.isEmpty) {
               return const Text('No address found');
@@ -41,14 +43,12 @@ class AddressListsWidget extends ConsumerWidget {
                     backgroundColor: ColorConstants.primary,
                     child: Text(
                       addresses[i].name.initialLetters,
-                      style:
-                          typoConfig.textStyle.smallCaptionLabelMedium.copyWith(
-                        color: Colors.white,
-                      ),
+                      style: typoConfig.textStyle.smallCaptionLabelMedium
+                          .copyWith(color: Colors.white),
                     ),
                   ),
                   title: Text(
-                    '${address.name.capitalize}, ${address.mobile}',
+                    '${address.name.capitalize}, ${address.phone}',
                     style: typoConfig.textStyle.largeCaptionLabel3Bold,
                   ),
                   subtitle: Text(
@@ -61,12 +61,8 @@ class AddressListsWidget extends ConsumerWidget {
               itemCount: addresses.length,
             );
           },
-          error: (err, stack) => Center(
-            child: Text(err.toString()),
-          ),
-          loading: () => Center(
-            child: LoaderWidget(),
-          ),
+          error: (err, stack) => Center(child: Text(err.toString())),
+          loading: () => Center(child: LoaderWidget()),
         );
   }
 }

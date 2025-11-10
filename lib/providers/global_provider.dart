@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hooks_riverpod/legacy.dart';
 
 import '../providers/location_provider.dart' show locationProvider;
 import '../config/firebase_config.dart';

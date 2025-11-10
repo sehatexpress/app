@@ -8,29 +8,23 @@ class PositionModel {
   final String geohash;
   final GeoPoint geopoint;
 
-  const PositionModel({
-    required this.geohash,
-    required this.geopoint,
-  });
+  const PositionModel({required this.geohash, required this.geopoint});
 
-  PositionModel copyWith({
-    String? geohash,
-    GeoPoint? geopoint,
-  }) =>
+  PositionModel copyWith({String? geohash, GeoPoint? geopoint}) =>
       PositionModel(
         geohash: geohash ?? this.geohash,
         geopoint: geopoint ?? this.geopoint,
       );
 
   Map<String, dynamic> toDocument() => {
-        FirestoreFields.geohash: geohash,
-        FirestoreFields.geopoint: geopoint,
-      };
+    Fields.geohash: geohash,
+    Fields.geopoint: geopoint,
+  };
 
   factory PositionModel.fromSnapshot(Map<String, dynamic> snap) =>
       PositionModel(
-        geohash: snap[FirestoreFields.geohash],
-        geopoint: snap[FirestoreFields.geopoint],
+        geohash: snap[Fields.geohash],
+        geopoint: snap[Fields.geopoint],
       );
 
   @override

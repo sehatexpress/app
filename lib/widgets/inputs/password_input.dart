@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import '../../config/constants.dart';
 import '../../config/utils.dart';
 
-class PasswordInputWidget extends StatefulWidget {
+class PasswordInput extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
-  const PasswordInputWidget({
+  const PasswordInput({
     super.key,
     required this.controller,
     this.hintText = 'Enter Password*',
   });
 
   @override
-  State<PasswordInputWidget> createState() => _PasswordInputWidgetState();
+  State<PasswordInput> createState() => _PasswordInputState();
 }
 
-class _PasswordInputWidgetState extends State<PasswordInputWidget> {
+class _PasswordInputState extends State<PasswordInput> {
   bool hide = true;
   @override
   Widget build(BuildContext context) {
@@ -32,12 +32,8 @@ class _PasswordInputWidgetState extends State<PasswordInputWidget> {
           margin: const EdgeInsets.only(left: 16, right: 10),
           child: const Icon(Icons.lock_rounded),
         ),
-        prefixIconConstraints: const BoxConstraints(
-          maxHeight: 40,
-        ),
-        suffixIconConstraints: const BoxConstraints(
-          maxHeight: 40,
-        ),
+        prefixIconConstraints: const BoxConstraints(maxHeight: 40),
+        suffixIconConstraints: const BoxConstraints(maxHeight: 40),
         suffixIcon: Container(
           margin: const EdgeInsets.only(left: 10, right: 16),
           child: GestureDetector(

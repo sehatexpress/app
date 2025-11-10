@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart' show immutable;
 
 import '../config/enums.dart' show FilterEnum, convertToFilterType;
 import '../config/extensions.dart' show FilterEnumValue;
-import '../config/string_constants.dart' show FirestoreFields;
+import '../config/string_constants.dart' show Fields;
 import 'product_model.dart';
 
 @immutable
@@ -55,16 +55,16 @@ class BasketItem {
   );
 
   Map<String, dynamic> toDocument() => {
-    FirestoreFields.id: id,
-    FirestoreFields.name: name,
-    FirestoreFields.image: image,
-    FirestoreFields.category: category,
-    FirestoreFields.commission: commission,
-    FirestoreFields.commissionType: commissionType,
-    FirestoreFields.sellingPrice: price,
-    FirestoreFields.quantity: quantity,
-    FirestoreFields.description: description,
-    FirestoreFields.type: type.type,
+    Fields.id: id,
+    Fields.name: name,
+    Fields.image: image,
+    Fields.category: category,
+    Fields.commission: commission,
+    Fields.commissionType: commissionType,
+    Fields.sellingPrice: price,
+    Fields.quantity: quantity,
+    Fields.description: description,
+    Fields.type: type.type,
   };
 
   factory BasketItem.fromProduct(ProductModel snap) => BasketItem(
@@ -81,20 +81,20 @@ class BasketItem {
   );
 
   factory BasketItem.fromSnapshot(Map<String, dynamic> snap) => BasketItem(
-    id: snap[FirestoreFields.id],
-    name: snap[FirestoreFields.name],
-    image: snap[FirestoreFields.image],
-    category: snap[FirestoreFields.category],
-    commission: snap[FirestoreFields.commission],
-    commissionType: snap[FirestoreFields.commissionType],
-    price: snap.toString().contains(FirestoreFields.sellingPrice)
-        ? snap[FirestoreFields.sellingPrice]
-        : snap[FirestoreFields.price],
-    quantity: snap[FirestoreFields.quantity],
-    description: snap.toString().contains(FirestoreFields.description)
-        ? snap[FirestoreFields.description]
+    id: snap[Fields.id],
+    name: snap[Fields.name],
+    image: snap[Fields.image],
+    category: snap[Fields.category],
+    commission: snap[Fields.commission],
+    commissionType: snap[Fields.commissionType],
+    price: snap.toString().contains(Fields.sellingPrice)
+        ? snap[Fields.sellingPrice]
+        : snap[Fields.price],
+    quantity: snap[Fields.quantity],
+    description: snap.toString().contains(Fields.description)
+        ? snap[Fields.description]
         : '',
-    type: convertToFilterType(snap[FirestoreFields.type]),
+    type: convertToFilterType(snap[Fields.type]),
   );
 
   @override

@@ -18,7 +18,8 @@ class Strings {
   static const loginBeforeProceeding =
       'Authentication - Please login before preceeding!';
   static const loginToApplyVoucher = 'Please login to apply vouchers';
-  static const duplicateMobile = 'The mobile number you entered is already associated with another account. Please try a different number.';
+  static const duplicatePhone =
+      'The phone number you entered is already associated with another account. Please try a different number.';
   static const userNotFound =
       'No account found with the provided email, phone number, or username. Please check your details or sign up for a new account.';
   static const restaurantClosed =
@@ -31,8 +32,7 @@ class Strings {
       'Change Delivery Address - Seems like your delivery address is more than 5km. Please choose a delivery address with in 5km of radius or order from a restaurant nearby.';
   static const genericOrderError =
       'Error - Something went while placing your order. Please try again after some time.';
-  static const updateAvailableTitle =
-      'Important Update Available';
+  static const updateAvailableTitle = 'Important Update Available';
   static const updateAvailableMessage =
       'We’ve added some great new features and important fixes to improve your experience. Please update the app to continue enjoying everything smoothly.';
   static const passwordUpdated =
@@ -59,15 +59,16 @@ class CollectionConstants {
 }
 
 @immutable
-class FirestoreFields {
+class Fields {
   static const id = 'id';
   static const uid = 'uid';
   static const createdAt = 'createdAt';
   static const deviceToken = 'deviceToken';
   static const email = 'email';
+  static const password = 'password';
   static const freeDelivery = 'freeDelivery';
   static const gender = 'gender';
-  static const mobile = 'mobile';
+  static const phone = 'phone';
   static const name = 'name';
   static const points = 'points';
   static const status = 'status';
@@ -92,6 +93,7 @@ class FirestoreFields {
   static const quantity = 'quantity';
   static const description = 'description';
   static const type = 'type';
+  static const address = 'address';
   static const restaurantId = 'restaurantId';
   static const restaurantName = 'restaurantName';
   static const restaurantImage = 'restaurantImage';
@@ -157,7 +159,7 @@ class FirestoreFields {
   static const deliveryTime = 'deliveryTime';
   static const categories = 'categories';
   static const ownerEmail = 'ownerEmail';
-  static const ownerMobile = 'ownerMobile';
+  static const ownerPhone = 'ownerPhone';
   static const ownerName = 'ownerName';
   static const totalDelivery = 'totalDelivery';
   static const openingTime = 'openingTime';
@@ -166,7 +168,7 @@ class FirestoreFields {
   static const imageUrl = 'imageUrl';
   static const createdBy = 'createdBy';
   static const updatedBy = 'updatedBy';
-  const FirestoreFields._();
+  const Fields._();
 }
 
 @immutable

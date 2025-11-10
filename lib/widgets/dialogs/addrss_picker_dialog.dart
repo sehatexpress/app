@@ -37,10 +37,9 @@ class AddressPickerDialog extends HookConsumerWidget {
               },
               onTap: (LatLng latLng) async {
                 loading.value = true;
-                var res = await ref.read(locationServiceProvider).getAddress(
-                      latLng.latitude,
-                      latLng.longitude,
-                    );
+                var res = await ref
+                    .read(locationServiceProvider)
+                    .getAddress(latLng.latitude, latLng.longitude);
                 selectedLocation.value = res;
                 loading.value = false;
                 mapController.value?.animateCamera(
@@ -68,8 +67,9 @@ class AddressPickerDialog extends HookConsumerWidget {
                     backgroundColor: Colors.white,
                     shape: CircleBorder(),
                   ),
-                  onPressed:
-                      !loading.value ? () => Navigator.pop(context) : null,
+                  onPressed: !loading.value
+                      ? () => Navigator.pop(context)
+                      : null,
                   icon: const Icon(Icons.arrow_back_ios_new_rounded),
                 ),
               ),
