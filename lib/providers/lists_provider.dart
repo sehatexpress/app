@@ -7,13 +7,11 @@ import '../models/comment_model.dart';
 import '../models/order_model.dart';
 import '../models/product_model.dart';
 import '../models/query_model.dart';
-import '../models/user_model.dart';
 import '../services/address_service.dart';
 import '../services/lists_service.dart';
 import '../services/order_service.dart';
 import '../services/query_service.dart';
 import '../services/setting_service.dart';
-import '../services/user_service.dart';
 import 'auth_provider.dart' show authUidProvider;
 import 'location_provider.dart' show locationProvider;
 
@@ -34,14 +32,6 @@ final addressListProvider = StreamProvider<List<AddressModel>>((ref) {
   return userId != null
       ? ref.watch(addressServiceProvider).getAddress(userId)
       : Stream.value([]);
-});
-
-final userDetailProvider = StreamProvider<UserModel?>((ref) {
-  ref.keepAlive();
-  final uid = ref.watch(authUidProvider);
-  return uid != null
-      ? ref.watch(userServiceProvider).getUserStreamDetail(uid)
-      : Stream.value(null);
 });
 
 // 🔹 Product & Category providers

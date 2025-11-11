@@ -40,3 +40,5 @@ TicketStatusEnum convertToTicketStatus(String val) {
 enum MessageType { neutral, error, success }
 
 enum AddressType { home, office, work, other }
+
+enum NotificationEnum { info, error, warning, success }

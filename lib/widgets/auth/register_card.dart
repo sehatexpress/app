@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/extensions.dart';
-import '../../config/string_constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/global_provider.dart';
 import '../../services/http_service.dart';
@@ -50,15 +49,20 @@ class RegisterCardWidget extends HookConsumerWidget {
                         email: email.text.trim(),
                         password: password.text.trim(),
                       );
-                  if (!res.containsKey('uid')) throw Strings.error;
-                  final token = res['token'];
-                  if (token != null) {
-                    await ref
-                        .read(authProvider.notifier)
-                        .loginWithToken(res['token']);
+                  if (res.isNotEmpty &&
+                      res.containsKey('success') &&
+                      res['success'] == true &&
+                      res.containsKey('token') &&
+                      res['token'] != null) {
+                    final token = res['token'];
+                    if (token != null) {
+                      await ref
+                          .read(authProvider.notifier)
+                          .loginWithToken(res['token']);
+                    }
+                    context.showSnackbar('Registered successfully!');
                   }
-                  context.showSnackbar('Registered successfully!');
-                  context.pop();
+                  throw res['message'];
                 }
               });
             },

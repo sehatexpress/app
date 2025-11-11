@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,7 +10,6 @@ import '../screens/auth_screen.dart';
 import '../services/notification_service.dart';
 import 'helper/loading_screen.dart';
 import 'helper/message_screen.dart';
-import 'helper/no_internet_screen.dart';
 import 'helper/order_placer_screen.dart';
 import 'root/root_screen.dart';
 
@@ -20,19 +18,7 @@ class Wrapper extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.read(authProvider);
-
-    // Listen to connectivity changes
-    ref.listen<AsyncValue<List<ConnectivityResult>>>(connectivityProvider, (
-      _,
-      result,
-    ) {
-      final hasConnection =
-          result.value?.any((r) => r != ConnectivityResult.none) ?? false;
-      hasConnection
-          ? NoInternetScreen.instance().hide()
-          : NoInternetScreen.instance().show(context: context);
-    });
+    final uid = ref.watch(authUidProvider);
 
     // Listen to global state for loading, messages, and order placement
     ref.listen<bool>(loadingProvider, (prev, next) {
@@ -70,6 +56,6 @@ class Wrapper extends HookConsumerWidget {
       ref.watch(basketProvider);
     });
 
-    return user != null ? const AuthScreen() : const RootScreen();
+    return uid == null ? const AuthScreen() : const RootScreen();
   }
 }

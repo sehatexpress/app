@@ -11,18 +11,14 @@ TextStyle textDecorationTextStyle(
   Color color, {
   FontWeight fontWeight = FontWeight.w400,
   double fontSize = 13,
-}) =>
-    TextStyle(
-      color: color,
-      letterSpacing: .5,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-    );
+}) => TextStyle(
+  color: color,
+  letterSpacing: .5,
+  fontSize: fontSize,
+  fontWeight: fontWeight,
+);
 
 OutlineInputBorder outlineInputBorder(Color color) => OutlineInputBorder(
-      borderSide: BorderSide(
-        width: .5,
-        color: color,
-      ),
-      borderRadius: BorderRadius.circular(8),
-    );
+  borderSide: BorderSide(width: .5, color: color),
+  borderRadius: BorderRadius.circular(24),
+);

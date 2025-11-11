@@ -1,12 +1,12 @@
-import 'package:geolocator/geolocator.dart' show GeolocatorPlatform, Position;
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hooks_riverpod/legacy.dart';
 
+import '../config/extensions.dart';
 import '../config/string_constants.dart' show LocationStrings;
 import '../models/location_model.dart';
 import '../services/location_service.dart';
 import '../states/location_state.dart';
-import 'global_provider.dart' show loadingProvider, messageProvider;
 
 final locationProvider = StateNotifierProvider<LocationNotifier, LocationState>(
   (ref) => LocationNotifier(ref),
@@ -19,18 +19,14 @@ class LocationNotifier extends StateNotifier<LocationState> {
   LocationNotifier(this.ref) : super(LocationState());
 
   Future<void> requestLocation() async {
-    try {
-      ref.read(loadingProvider.notifier).state =true;
-      bool enabled =
-          await ref.read(locationServiceProvider).checkLocationPermission();
+    await ref.withLoading(() async {
+      bool enabled = await ref
+          .read(locationServiceProvider)
+          .checkLocationPermission();
       if (!enabled) throw LocationStrings.locationDenied;
       state = state.copyWith(enabled: enabled);
       await init();
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      ref.read(loadingProvider.notifier).state =false;
-    }
+    });
   }
 
   void updateCity(String? city) => state = state.copyWith(city: city);
@@ -39,65 +35,42 @@ class LocationNotifier extends StateNotifier<LocationState> {
     required double latitude,
     required double longitude,
   }) async {
-    try {
-      ref.read(loadingProvider.notifier).state =true;
+    await ref.withLoading(() async {
       await _updateLocation(latitude, longitude);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      ref.read(loadingProvider.notifier).state =false;
-    }
+    });
   }
 
   Future<void> getCurrentLocation() async {
-    try {
-      ref.read(loadingProvider.notifier).state =true;
+    await ref.withLoading(() async {
       var pos = await ref.read(locationServiceProvider).getCurrentLocation();
       await _updateLocation(pos.latitude, pos.longitude);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      ref.read(loadingProvider.notifier).state =false;
-    }
+    });
   }
 
   Future<void> _updateLocation(double lat, double lng) async {
-    try {
-      final loc = await ref.read(locationServiceProvider).getAddress(lat, lng);
-      state = state.copyWith(
-        latitude: lat,
-        longitude: lng,
-        location: loc,
-        city: loc.city,
-      );
-    } catch (e) {
-      _handleError(e);
-    }
+    final loc = await ref.read(locationServiceProvider).getAddress(lat, lng);
+    state = state.copyWith(
+      latitude: lat,
+      longitude: lng,
+      location: loc,
+      city: loc.city,
+    );
   }
 
   Future<void> init({bool load = false}) async {
-    try {
-      ref.read(loadingProvider.notifier).state =true;
+    await ref.withLoading(() async {
       Position cords = await _geolocator.getCurrentPosition();
       await _updateLocation(cords.latitude, cords.longitude);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      ref.read(loadingProvider.notifier).state =false;
-    }
+    });
   }
 
   Future<void> searchLocation(String search) async {
-    try {
-      ref.read(loadingProvider.notifier).state =true;
-      final result =
-          await ref.read(locationServiceProvider).getLocationBySearch(search);
+    await ref.withLoading(() async {
+      final result = await ref
+          .read(locationServiceProvider)
+          .getLocationBySearch(search);
       state = state.copyWith(searchedLocations: result);
-    } catch (e) {
-      _handleError(e);
-    } finally {
-      ref.read(loadingProvider.notifier).state =false;
-    }
+    });
   }
 
   void addToSearchLocation(LocationModel location) {
@@ -117,10 +90,5 @@ class LocationNotifier extends StateNotifier<LocationState> {
       searchedLocations: [],
       focusedLocationIndex: 0,
     );
-  }
-
-  void _handleError(dynamic e) {
-    ref.read(messageProvider.notifier).state =e.toString();
-    state = state.copyWith(enabled: false);
   }
 }

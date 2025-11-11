@@ -17,59 +17,35 @@ class AuthScreen extends HookConsumerWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                spacing: 12,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (authType.value == 0)
-                    PhoneAuth(
-                      phone: phone,
-                      onRegister: () => authType.value = 1,
-                    ),
-                  if (authType.value == 1)
-                    RegisterCardWidget(phone: phone.text.trim()),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'OR',
-                      style: context.text.labelMedium?.copyWith(
-                        height: 1,
-                        color: ColorConstants.textColor,
-                      ),
-                    ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            spacing: 12,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (authType.value == 0)
+                PhoneAuth(phone: phone, onRegister: () => authType.value = 1),
+              if (authType.value == 1)
+                RegisterCardWidget(phone: phone.text.trim()),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'OR',
+                  style: context.text.labelMedium?.copyWith(
+                    height: 1,
+                    color: ColorConstants.textColor,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (authType.value == 0) {
-                        authType.value = 1;
-                      } else {
-                        authType.value = 0;
-                      }
-                    },
-                    child: Text('Login with phone OTP'),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 16,
-              right: 16,
-              child: IconButton(
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
                 ),
-                onPressed: () => context.pop(),
-                icon: Icon(Icons.close),
               ),
-            ),
-          ],
+              ElevatedButton(
+                onPressed: () {
+                  authType.value = 0;
+                },
+                child: Text('Login with phone OTP'),
+              ),
+            ],
+          ),
         ),
       ),
     );

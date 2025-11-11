@@ -6,6 +6,7 @@ import 'config/constants.dart' show KeyConstants;
 import 'config/theme.dart' show theme;
 import 'providers/global_provider.dart' show appStartupProvider;
 import 'screens/wrapper.dart';
+import 'widgets/generic/no_internet_connection_widget.dart';
 import 'widgets/startup/startup_loading.dart';
 import 'widgets/startup/startup_error.dart';
 
@@ -40,6 +41,9 @@ class AppStartupWidget extends ConsumerWidget {
           ),
         ),
       ),
+      builder: (context, child) {
+        return NoInternetConnectionOverlayManager(child: child!);
+      },
       navigatorKey: KeyConstants.navigatorKey,
     );
   }

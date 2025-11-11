@@ -345,7 +345,7 @@ extension FirebaseErrorHandler on dynamic {
       return (this as FirebaseException).message ??
           "Something went wrong with Firebase!";
     } else {
-      return "Unexpected error: ${toString()}";
+      return toString();
     }
   }
 }
@@ -376,4 +376,3 @@ extension DialogText on String {
     ),
   );
 }
-

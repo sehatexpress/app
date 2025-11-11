@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../config/constants.dart';
+import '../../config/extensions.dart';
 import '../../config/typo_config.dart';
 import '../../screens/auth_screen.dart';
 
@@ -21,12 +22,7 @@ class AuthButtonWidget extends StatelessWidget {
         backgroundColor: ColorConstants.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      onPressed: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const AuthScreen(),
-          fullscreenDialog: true,
-        ),
-      ),
+      onPressed: () => context.push(const AuthScreen()),
     );
   }
 }

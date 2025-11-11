@@ -9,40 +9,30 @@ import 'global_provider.dart';
 
 class AuthStateNotifier extends StateNotifier<User?> {
   final Ref ref;
-  final AuthService _authService;
+  final AuthService _auth;
 
   // Initializing notifier
-  AuthStateNotifier(this.ref, this._authService)
-    : super(_authService.currentUser) {
-    _authService.authStateChanges.listen((user) => state = user);
+  AuthStateNotifier(this.ref, this._auth) : super(_auth.currentUser) {
+    _auth.authStateChanges.listen((user) => state = user);
   }
 
   // 🔹 Login with email & password
   Future<void> login({required String email, required String password}) async {
     await ref.withLoading(() async {
-      var user = await _authService.loginWithEmailAndPassword(
+      var user = await _auth.loginWithEmailAndPassword(
         email: email,
         password: password,
       );
-      await _initLogin(user);
+      state = user;
     });
   }
 
   // 🔹 Login with token
   Future<void> loginWithToken(String token) async {
     await ref.withLoading(() async {
-      var user = await _authService.loginWithToken(token);
-      await _initLogin(user);
+      var user = await _auth.loginWithToken(token);
+      state = user;
     });
-  }
-
-  // 🔹 init Login
-  Future<void> _initLogin(User? user) async {
-    if (user == null) {
-      ref.read(messageProvider.notifier).state = Strings.error;
-      return;
-    }
-    state = ref.read(authServiceProvider).currentUser;
   }
 
   // 🔹 Logout
@@ -53,13 +43,11 @@ class AuthStateNotifier extends StateNotifier<User?> {
     }
 
     await ref.withLoading(() async {
-      await _authService.logout();
+      await _auth.logout();
       state = null;
     });
   }
 }
-
-final isOTPSentProvider = StateProvider((_) => false);
 
 // 🔹 StateNotifierProvider
 final authProvider = StateNotifierProvider<AuthStateNotifier, User?>((ref) {

@@ -8,15 +8,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
+    return SingleChildScrollView(
       padding: EdgeInsets.all(16),
-      children: const [
-        SearchMenuWidget(),
-        SizedBox(height: 12),
-        MenuListWidget(),
-      ],
+      child: Column(
+        spacing: 12,
+        children: const [SearchMenuWidget(), MenuListWidget()],
+      ),
     );
   }
 }

@@ -44,22 +44,29 @@ class PhoneAuth extends HookConsumerWidget {
       await ref.withLoading(() async {
         FocusScope.of(context).unfocus();
         if (otp.value != null && otp.value!.length == 4) {
+          final phoneTxt = phone.text.trim();
           Map<String, dynamic>? result = await notifier.verifyOTP(
-            phone: phone.text.trim(),
+            phone: phoneTxt,
             otp: otp.value!,
           );
           if (result.isNotEmpty &&
               result.containsKey('success') &&
               result['success'] == true) {
-            final token = result['token'];
-            if (token != null) {
-              await ref.read(authProvider.notifier).loginWithToken(token);
-              context.pop();
+            final res = await notifier.getAuthToken(phoneTxt);
+            if (res.isNotEmpty &&
+                res.containsKey('success') &&
+                res['success'] == true) {
+              final token = res['token'];
+              if (token != null) {
+                await ref.read(authProvider.notifier).loginWithToken(token);
+              } else {
+                context.showSnackbar(
+                  'You are not registered. Please sign up first.',
+                );
+                onRegister();
+              }
             } else {
-              context.showSnackbar(
-                'You are not registered. Please sign up first.',
-              );
-              onRegister();
+              throw res['message'];
             }
           } else {
             throw result['message'];

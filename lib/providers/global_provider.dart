@@ -1,6 +1,5 @@
 import 'dart:developer' as console show log;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -9,12 +8,6 @@ import 'package:hooks_riverpod/legacy.dart';
 
 import '../providers/location_provider.dart' show locationProvider;
 import '../config/firebase_config.dart';
-
-/// connectivity provider
-final connectivityProvider = StreamProvider<List<ConnectivityResult>>(
-  (ref) => Connectivity().onConnectivityChanged,
-);
-
 
 final loadingProvider = StateProvider<bool>((ref) => false);
 final messageProvider = StateProvider<String?>((ref) => null);

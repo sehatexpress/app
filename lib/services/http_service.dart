@@ -1,8 +1,7 @@
 import 'dart:convert' show json;
 
-import 'package:flutter/foundation.dart' show kDebugMode, defaultTargetPlatform;
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../config/extensions.dart';
@@ -10,7 +9,7 @@ import '../config/string_constants.dart';
 
 final _backendURL = kDebugMode
     ? defaultTargetPlatform == TargetPlatform.android
-          ? "http://192.168.1.3:4000"
+          ? "http://192.168.1.2:4000"
           : "http://localhost:4000"
     : "https://toeatonodejs.onrender.com";
 
@@ -48,7 +47,7 @@ class HttpService {
 
   // 🔹 get generated token
   Future<Map<String, dynamic>> getAuthToken(String phone) async {
-    return _callAPI('otp/generate-token', {Fields.phone: phone});
+    return _callAPI('auth/generate-token', {Fields.phone: phone});
   }
 }
 
@@ -66,8 +65,7 @@ Future<Map<String, dynamic>> _callAPI(
     if (response.statusCode != 200) {
       throw response.errorMessage;
     }
-    final Map<String, dynamic> data = json.decode(response.body);
-    return data;
+    return json.decode(response.body);
   } catch (e) {
     throw e.firebaseErrorMessage;
   }

@@ -67,7 +67,6 @@ class Fields {
   static const email = 'email';
   static const password = 'password';
   static const freeDelivery = 'freeDelivery';
-  static const gender = 'gender';
   static const phone = 'phone';
   static const name = 'name';
   static const points = 'points';

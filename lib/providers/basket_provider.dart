@@ -4,10 +4,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hooks_riverpod/legacy.dart';
 
-import '../config/extensions.dart' show StringExtensions;
-import '../providers/auth_provider.dart' show authUidProvider;
+import '../config/extensions.dart';
+import '../providers/auth_provider.dart' show authProvider, authUidProvider;
 import '../config/string_constants.dart' show Strings;
-import '../providers/global_provider.dart';
 import '../providers/location_provider.dart' show locationProvider;
 import '../models/order_model.dart';
 import '../services/geo_position_service.dart';
@@ -96,8 +95,7 @@ class BasketNotifier extends StateNotifier<BasketState> {
   }
 
   Future<void> _fetchDeliveryDistance() async {
-    try {
-      ref.read(loadingProvider.notifier).state = true;
+    ref.withLoading(() async {
       final origin = '0,0';
       final destination =
           '${state.address!.position.geopoint.latitude},${state.address!.position.geopoint.longitude}';
@@ -105,18 +103,13 @@ class BasketNotifier extends StateNotifier<BasketState> {
           .read(locationServiceProvider)
           .getDeliveryDistance(origin, destination);
       state = state.copyWith(deliveryDistance: distance);
-    } catch (e) {
-      ref.read(messageProvider.notifier).state = e.toString();
-    } finally {
-      ref.read(loadingProvider.notifier).state = false;
-    }
+    });
   }
 
   Future<void> placeOrder(OrderModel order) async {
     final uid = ref.read(authUidProvider);
     if (uid == null) throw Strings.loginBeforeProceeding;
-    try {
-      ref.read(loadingProvider.notifier).state = true;
+    await ref.withLoading(() async {
       await ref.read(orderServiceProvider).placeOrder(order);
       if (!kIsWeb) {
         notificationService.sendLocalNotification(
@@ -124,20 +117,14 @@ class BasketNotifier extends StateNotifier<BasketState> {
           'Hurray, your order has been placed successfully. Tap for more info.',
         );
       }
-      ref.read(orderPlacedProvider.notifier).state = true;
       clear();
-    } catch (e) {
-      ref.read(messageProvider.notifier).state = e.toString();
-    } finally {
-      ref.read(loadingProvider.notifier).state = false;
-    }
+    });
   }
 
   Future<void> useCurrentLocation() async {
-    final auth = ref.read(userDetailProvider).value;
+    final auth = ref.read(authProvider);
     if (auth == null) throw Strings.loginBeforeProceeding;
-    try {
-      ref.read(loadingProvider.notifier).state = true;
+    await ref.withLoading(() async {
       var cords = await GeolocatorPlatform.instance.getCurrentPosition();
       var position = await geoPositionService.getPosition(
         latitude: cords.latitude,
@@ -147,17 +134,13 @@ class BasketNotifier extends StateNotifier<BasketState> {
           .read(locationServiceProvider)
           .getAddress(cords.latitude, cords.longitude);
       AddressModel address = AddressModel(
-        name: auth.name,
-        phone: auth.phone,
+        name: auth.displayName!,
+        phone: auth.phoneNumber!,
         street: location.displayName,
         position: position,
       );
       selectAddress(address);
-    } catch (e) {
-      ref.read(messageProvider.notifier).state = e.toString();
-    } finally {
-      ref.read(loadingProvider.notifier).state = false;
-    }
+    });
   }
 
   /// clear basket

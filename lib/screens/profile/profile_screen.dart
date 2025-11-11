@@ -5,9 +5,7 @@ import 'package:url_launcher/url_launcher.dart' show LaunchMode, launchUrl;
 import '../../config/constants.dart';
 import '../../config/extensions.dart';
 import '../../providers/auth_provider.dart' show authProvider;
-import '../../providers/lists_provider.dart' show userDetailProvider;
 import '../../widgets/auth/auth_button_widget.dart';
-import '../../widgets/generic/data_view_widget.dart';
 import '../../widgets/profile/contactus_widget.dart';
 import '../../widgets/profile/profile_menu_container_widget.dart';
 import '../../widgets/profile/profile_menu_tile_widget.dart';
@@ -21,49 +19,48 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DataViewWidget(
-      provider: userDetailProvider,
-      dataBuilder: (data) => ListView(
-        padding: const EdgeInsets.all(16),
-        shrinkWrap: true,
-        children: [
-          data != null
-              ? _buildProfileTile(context, ref, data)
-              : const AuthButtonWidget(),
-          if (data != null) _buildAccountSection(context),
-          const SizedBox(height: 16),
-          _buildServicesSection(context),
-          const SizedBox(height: 16),
-          _buildSocialSection(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProfileTile(BuildContext context, WidgetRef ref, dynamic data) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(6),
-      ),
-      clipBehavior: Clip.antiAlias,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ProfileMenuTileWidget(
-        isProfile: true,
-        leading: Text(data.name.toString().initialLetters),
-        title: '${data.name.capitalize}, ${data.mobile}',
-        subtitle: data.email,
-        trailing: IconButton(
-          onPressed: () async {
-            final result = await context.showGenericDialog(
-              title: 'Logout',
-              content: 'Do you watnt to logout?',
-            );
-            if (result == true) ref.read(authProvider.notifier).logout();
-          },
-          icon: const Icon(Icons.logout_rounded),
-        ),
-      ),
+    final user = ref.watch(authProvider);
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      shrinkWrap: true,
+      children: [
+        user != null
+            ? Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                clipBehavior: Clip.antiAlias,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                child: ProfileMenuTileWidget(
+                  isProfile: true,
+                  leading: Text(user.displayName.toString().initialLetters),
+                  title: '${user.displayName?.capitalize}, ${user.phoneNumber}',
+                  subtitle: user.email,
+                  trailing: IconButton(
+                    onPressed: () async {
+                      final result = await context.showGenericDialog(
+                        title: 'Logout',
+                        content: 'Do you watnt to logout?',
+                      );
+                      if (result == true) {
+                        ref.read(authProvider.notifier).logout();
+                      }
+                    },
+                    icon: const Icon(Icons.logout_rounded),
+                  ),
+                ),
+              )
+            : const AuthButtonWidget(),
+        if (user != null) _buildAccountSection(context),
+        const SizedBox(height: 16),
+        _buildServicesSection(context),
+        const SizedBox(height: 16),
+        _buildSocialSection(),
+      ],
     );
   }
 
