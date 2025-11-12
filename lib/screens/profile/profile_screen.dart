@@ -20,47 +20,47 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authProvider);
-    return ListView(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
-      shrinkWrap: true,
-      children: [
-        user != null
-            ? Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                clipBehavior: Clip.antiAlias,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                child: ProfileMenuTileWidget(
-                  isProfile: true,
-                  leading: Text(user.displayName.toString().initialLetters),
-                  title: '${user.displayName?.capitalize}, ${user.phoneNumber}',
-                  subtitle: user.email,
-                  trailing: IconButton(
-                    onPressed: () async {
-                      final result = await context.showGenericDialog(
-                        title: 'Logout',
-                        content: 'Do you watnt to logout?',
-                      );
-                      if (result == true) {
-                        ref.read(authProvider.notifier).logout();
-                      }
-                    },
-                    icon: const Icon(Icons.logout_rounded),
+      child: Column(
+        spacing: 16,
+        children: [
+          user != null
+              ? Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
                   ),
-                ),
-              )
-            : const AuthButtonWidget(),
-        if (user != null) _buildAccountSection(context),
-        const SizedBox(height: 16),
-        _buildServicesSection(context),
-        const SizedBox(height: 16),
-        _buildSocialSection(),
-      ],
+                  clipBehavior: Clip.antiAlias,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: ProfileMenuTileWidget(
+                    isProfile: true,
+                    leading: Text(user.displayName.toString().initialLetters),
+                    title:
+                        '${user.displayName?.capitalize}, ${user.phoneNumber}',
+                    subtitle: user.email,
+                    trailing: IconButton(
+                      onPressed: () async {
+                        final result = await context.showGenericDialog(
+                          title: 'Logout',
+                          content: 'Do you watnt to logout?',
+                        );
+                        if (result == true) {
+                          ref.read(authProvider.notifier).logout();
+                        }
+                      },
+                      icon: const Icon(Icons.logout_rounded),
+                    ),
+                  ),
+                )
+              : const AuthButtonWidget(),
+          if (user != null) _buildAccountSection(context),
+          _buildServicesSection(context),
+        ],
+      ),
     );
   }
 
@@ -133,34 +133,6 @@ class ProfileScreen extends ConsumerWidget {
       onTap: onTap,
     );
   }
-
-  Widget _buildSocialSection() {
-    return LayoutBuilder(
-      builder: (context, constrains) {
-        return ProfileMenuContainerWidget(
-          title: 'social touch',
-          widget: GridView.count(
-            primary: false,
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            childAspectRatio: (constrains.maxWidth / 2) / 42,
-            padding: EdgeInsets.zero,
-            children: List.generate(
-              _socialIcons.length,
-              (i) => TextButton.icon(
-                onPressed: () => launchUrl(
-                  Uri.parse(_socialUrls[i]),
-                  mode: LaunchMode.externalApplication,
-                ),
-                label: Text(_socialTitles[i]),
-                icon: Icon(_socialIcons[i]),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
 
 // accounts
@@ -187,19 +159,4 @@ List<Widget> _accountsFunctions = [
   DeliveryAddressesScreen(),
   AccountSettingsScreen(),
   CustomerSupportScreen(),
-];
-
-// socials
-List<String> _socialTitles = ['YouTube', 'Instagram', 'Facebook', 'Twitter'];
-List<String> _socialUrls = [
-  SocialURLConstant.youtube,
-  SocialURLConstant.instagram,
-  SocialURLConstant.facebook,
-  SocialURLConstant.twitter,
-];
-List<IconData> _socialIcons = [
-  Icons.youtube_searched_for_rounded,
-  Icons.code_rounded,
-  Icons.facebook_rounded,
-  Icons.close_rounded,
 ];
